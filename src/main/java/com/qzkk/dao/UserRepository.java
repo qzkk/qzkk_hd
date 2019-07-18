@@ -2,6 +2,8 @@ package com.qzkk.dao;
 
 import com.qzkk.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -26,5 +28,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     List<User> findByAccount(String account);
 
+    /**
+     * 查找未审核的用户
+     * @param i: examine为0，表示未审核
+     * @return User列表
+     */
+    List<User> findByExamineEquals(int i);
+
+    User findByUId(long Uid);
 
 }

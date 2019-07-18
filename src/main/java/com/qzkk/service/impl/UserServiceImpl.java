@@ -1,5 +1,7 @@
 package com.qzkk.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.UserRepository;
 import com.qzkk.domain.User;
@@ -30,13 +32,11 @@ public class UserServiceImpl implements UserService {
 
         //排除account重复的情况
         tempUser = userRepository.findByAccount(user.getAccount());
-        if(tempUser.isEmpty()) {
+        if(!tempUser.isEmpty()) {
             res.put("code", "403");
             res.put("msg", "account has exist!");
             return res;
         }
-
-
         String password = user.getPsd();
         MD5Util md5Util = new MD5Util();
         password = md5Util.encode(password);
@@ -79,6 +79,67 @@ public class UserServiceImpl implements UserService {
 
         res = (JSONObject) JSONObject.toJSON(user);
         res.put("code", "200");
+        return res;
+    }
+
+    @Override
+    public JSONObject notAuditedUsers(int i) {
+        JSONObject res = new JSONObject();
+        JSONArray usersArray = new JSONArray();
+
+        List<User> users = userRepository.findByExamineEquals(i);
+        if(users.isEmpty()) {
+            res.put("code", "404");
+            res.put("msg", "don't exit unexamine users!");
+            return res;
+        } else {
+            usersArray = (JSONArray) JSONArray.toJSON(users);
+            res.put("code", "200");
+            res.put("msg", "query users successfully!");
+            res.put("length", usersArray.size());
+            res.put("users", usersArray);
+            return res;
+        }
+
+
+
+    }
+
+    @Override
+    public JSONObject auditedUser(long uid, String account) {
+        JSONObject res = new JSONObject();
+
+        User oldUser = userRepository.findByUId(uid);
+        oldUser.setExamine(1);
+        userRepository.save(oldUser);
+        res.put("code", "200");
+        res.put("msg", "examine pass!");
+        return res;
+    }
+
+    @Override
+    public JSONObject unauditedUser(long uid, String account) {
+        JSONObject res = new JSONObject();
+
+        User oldUser = userRepository.findByUId(uid);
+        oldUser.setExamine(-1);
+        userRepository.save(oldUser);
+        res.put("code", "200");
+        res.put("msg", "unexamine pass!");
+        return res;
+    }
+
+    @Override
+    public JSONObject getUsers() {
+        JSONObject res = new JSONObject();
+        JSONArray usersArray = new JSONArray();
+
+        List<User> users = userRepository.findByExamineEquals(1);
+        usersArray = (JSONArray) JSONArray.toJSON(users);
+        res.put("users", usersArray);
+        res.put("length", usersArray.size());
+        res.put("code", "200");
+        res.put("msg", "query successfully!");
         return res;
     }
 }

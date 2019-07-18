@@ -32,4 +32,9 @@ public class LoginController {
                           @RequestParam String psd) {
         return userService.login(account, psd);
     }
+
+    @GetMapping("/getUsers")
+    public JSONObject getUsers() {
+        return userService.getUsers();
+    }
 }
