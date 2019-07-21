@@ -47,4 +47,7 @@ public class User {
 
     //是否已经删除
     private int del;
+
+    //所在小队编号
+    private long tId;
 }

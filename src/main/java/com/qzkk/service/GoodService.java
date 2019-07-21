@@ -2,6 +2,7 @@ package com.qzkk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.domain.Good;
+import com.qzkk.domain.GoodApplication;
 
 /**
  * @author: jzc
@@ -21,4 +22,13 @@ public interface GoodService {
 
     //查看物资
     JSONObject viewGoods();
+
+    //申请一种物资
+    JSONObject addGoodApplication(GoodApplication goodApplication);
+
+    //审核通过物资申请
+    JSONObject examineApplication(long gaid);
+
+    //拒绝通过物资申请
+    JSONObject refuseApplication(long gaid);
 }

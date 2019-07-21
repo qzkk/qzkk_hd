@@ -32,7 +32,7 @@ public class ExamineController {
 
     @PostMapping("/unexaminationPassed")
     public JSONObject unexaminationPassed(@RequestParam long uid,
-                                        @RequestParam String account) {
+                                          @RequestParam String account) {
         return userService.unauditedUser(uid, account);
     }
 
