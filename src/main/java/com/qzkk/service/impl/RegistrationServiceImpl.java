@@ -1,17 +1,97 @@
 package com.qzkk.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.RegistrationRepository;
 import com.qzkk.domain.Registration;
 import com.qzkk.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     private RegistrationRepository registrationRepository;
     @Override
     public void save(Registration registration) {
        registrationRepository.save(registration);
+    }
+
+    @Override
+    public List<Registration> selectall() {
+        return registrationRepository.findAll();
+    }
+
+    @Override
+    public Page<Registration> selectToPageByStatic(Registration registration) {
+
+        Pageable pageable = PageRequest.of(registration.getPageOffset(),
+                registration.getPageSize(), Sort.Direction.DESC, "rid");
+        Page<Registration> registrations=registrationRepository.findToPage(registration.getName(),pageable);
+        return registrations;
+    }
+
+    @Override
+    public Page<Registration> findAllToPage(Integer Offset,Integer size) {
+
+        Page<Registration> registrations = registrationRepository.findAll(new PageRequest(Offset, size));
+        return registrations;
+    }
+
+    @Override
+    public JSONObject selectToPageByDynamic(Registration registration) {
+        JSONObject resData=new JSONObject();
+        Pageable pageable = PageRequest.of(registration.getPageOffset(),
+                registration.getPageSize(), Sort.Direction.DESC, "rid");
+        StringBuffer dataSql = new StringBuffer("select * from registration a where 1=1");
+        StringBuffer countSql = new StringBuffer("select count(1) from registration a where 1=1");
+        //进行动态添加约束
+        if (!registration.getName().isEmpty()){
+            dataSql.append(" and a.name =:name");
+            countSql.append(" and a.name =:name");
+        }
+        if (!registration.getWorkUnit().isEmpty()){
+            dataSql.append(" and a.work_unit =:workUnit");
+            countSql.append(" and a.work_unit =:workUnit");
+        }
+        if (!registration.getSubject().isEmpty()){
+            dataSql.append(" and a.subject =:subject");
+            countSql.append(" and a.subject =:subject");
+        }
+
+        //创建本地sql查询实例
+        Query dataQuery = (Query) entityManager.createNativeQuery(dataSql.toString(), Registration.class);
+        //查询总共有多少条数据，用于前端分页
+        Query countQuery = entityManager.createNativeQuery(countSql.toString());
+
+        //设置参数
+        if (!registration.getName().isEmpty()) {
+            dataQuery.setParameter("name", registration.getName());
+            countQuery.setParameter("name", registration.getName());
+        }
+        if (!registration.getWorkUnit().isEmpty()) {
+            dataQuery.setParameter("workUnit", registration.getWorkUnit());
+            countQuery.setParameter("workUnit", registration.getWorkUnit());
+        }
+        if (!registration.getSubject().isEmpty()) {
+            dataQuery.setParameter("subject", registration.getSubject());
+            countQuery.setParameter("subject", registration.getSubject());
+        }
+        dataQuery.setFirstResult((int) pageable.getOffset());
+        dataQuery.setMaxResults(pageable.getPageSize());
+        BigInteger count = (BigInteger) countQuery.getSingleResult();
+        Long totalNum = count.longValue();
+        List<Registration> list=dataQuery.getResultList();
+        resData.put("totalNum",totalNum);
+        resData.put("list",list);
+        return resData;
     }
 }

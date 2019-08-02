@@ -5,6 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * 登记系统
+ */
+
 @Entity
 @Table(name = "Registration")
 @Data
@@ -18,22 +22,32 @@ public class Registration {
 
     private int sex;
 
-    private String age;
+    private String castToSex;
 
-    private String identity;
+    //职位
+    private String workPosition;
 
-    //民族
-    private String nation;
+    //工作单位
+    private String workUnit;
 
-    //文化程度
-    private String educationDegree;
+    //专题名称
+    private String subject;
 
-    private String homeAdress;
+    //科考地点
+    private String researchSite;
 
-    private String email;
+    //服务保障需求
+    private String demand;
 
-    private String phone;
+    //来青日期
+    private String comeDate;
 
-    //登记日期
-    private String rDate;
+    //离青时间
+    private String backDate;
+
+    //需要第几页，只是为了传输方便才加的字段，对于实际数据没有任何意义
+    private Integer pageOffset;
+
+    //一页多少条，只是为了传输方便才加的字段，对于实际数据没有任何意义
+    private Integer pageSize;
 }
