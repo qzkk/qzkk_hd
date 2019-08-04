@@ -19,19 +19,38 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long uId;
 
-    //真实姓名
-    private String name;
-
     //密码（MD5加密）
     private String psd;
 
     //账号名
     private String account;
 
+    //真实姓名
+    private String name;
+
+    //性别
     private int sex;
 
-    //专业
-    private String major;
+    //职位
+    private String workPosition;
+
+    //工作单位
+    private String workUnit;
+
+    //专题名称
+    private String subjectName;
+
+    //科考区域
+    private String researchSite;
+
+    //服务保障需求
+    private String demand;
+
+    //来青日期
+    private String comeDate;
+
+    //离青时间
+    private String backDate;
 
     //身份证号
     private String idCard;
@@ -39,7 +58,7 @@ public class User {
     //类型：0队员 1队长 2管理员
     private int type;
 
-    //科考状态
+    //科考状态（暂时功能用不上，先留着吧）
     private int state;
 
     //审核

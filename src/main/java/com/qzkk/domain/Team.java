@@ -23,19 +23,22 @@ public class Team {
     //队长编号
     private long uId;
 
-    //小队人数
-    private int number;
-
-    //小队描述
-    private String description;
-
     //小队名称
     private String name;
 
-    //创建时间
+    //科考任务
+    private String kkTask;
+
+    //专题内容
+    private String subjectContent;
+
+    //科考区域
+    private String researchSite;
+
+    //创建时间(暂时功能用不上)
     private Date createTime;
 
-    //解散时间
+    //解散时间(暂时功能用不上)
     private Date delTime;
 
     //删除标志
