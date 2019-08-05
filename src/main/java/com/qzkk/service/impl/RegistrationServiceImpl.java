@@ -2,7 +2,7 @@ package com.qzkk.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.RegistrationRepository;
-import com.qzkk.domain.Registration;
+import com.qzkk.domain.User;
 import com.qzkk.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -21,54 +21,52 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private RegistrationRepository registrationRepository;
     @Override
-    public void save(Registration registration) {
+    public void save(User registration) {
        registrationRepository.save(registration);
     }
 
     @Override
-    public List<Registration> selectall() {
+    public List<User> selectall() {
         return registrationRepository.findAll();
     }
 
     @Override
-    public Page<Registration> selectToPageByStatic(Registration registration) {
+    public Page<User> selectToPageByStatic(Integer offset,Integer size,User registration) {
 
-        Pageable pageable = PageRequest.of(registration.getPageOffset(),
-                registration.getPageSize(), Sort.Direction.DESC, "rid");
-        Page<Registration> registrations=registrationRepository.findToPage(registration.getName(),pageable);
+        Pageable pageable = PageRequest.of(offset,size, Sort.Direction.ASC, "rid");
+        Page<User> registrations=registrationRepository.findToPage(registration.getName(),pageable);
         return registrations;
     }
 
     @Override
-    public Page<Registration> findAllToPage(Integer Offset,Integer size) {
+    public Page<User> findAllToPage(Integer Offset,Integer size) {
 
-        Page<Registration> registrations = registrationRepository.findAll(new PageRequest(Offset, size));
+        Page<User> registrations = registrationRepository.findAll(new PageRequest(Offset, size));
         return registrations;
     }
 
     @Override
-    public JSONObject selectToPageByDynamic(Registration registration) {
+    public JSONObject selectToPageByDynamic(Integer offset,Integer size,User registration) {
         JSONObject resData=new JSONObject();
-        Pageable pageable = PageRequest.of(registration.getPageOffset(),
-                registration.getPageSize(), Sort.Direction.DESC, "rid");
+        Pageable pageable = PageRequest.of(offset,size, Sort.Direction.ASC, "rid");
         StringBuffer dataSql = new StringBuffer("select * from registration a where 1=1");
         StringBuffer countSql = new StringBuffer("select count(1) from registration a where 1=1");
         //进行动态添加约束
         if (!registration.getName().isEmpty()){
-            dataSql.append(" and a.name =:name");
-            countSql.append(" and a.name =:name");
+            dataSql.append(" and a.name like CONCAT('%',:name,'%')");
+            countSql.append(" and a.name like CONCAT('%',:name,'%')");
         }
         if (!registration.getWorkUnit().isEmpty()){
-            dataSql.append(" and a.work_unit =:workUnit");
-            countSql.append(" and a.work_unit =:workUnit");
+            dataSql.append(" and a.work_unit like CONCAT('%',:workUnit,'%')");
+            countSql.append(" and a.work_unit like CONCAT('%',:workUnit,'%')");
         }
-        if (!registration.getSubject().isEmpty()){
-            dataSql.append(" and a.subject =:subject");
-            countSql.append(" and a.subject =:subject");
+        if (!registration.getSubjectName().isEmpty()){
+            dataSql.append(" and a.subject like CONCAT('%',:subject,'%')");
+            countSql.append(" and a.subject like CONCAT('%',:subject,'%')");
         }
 
         //创建本地sql查询实例
-        Query dataQuery = (Query) entityManager.createNativeQuery(dataSql.toString(), Registration.class);
+        Query dataQuery = (Query) entityManager.createNativeQuery(dataSql.toString(), User.class);
         //查询总共有多少条数据，用于前端分页
         Query countQuery = entityManager.createNativeQuery(countSql.toString());
 
@@ -81,15 +79,15 @@ public class RegistrationServiceImpl implements RegistrationService {
             dataQuery.setParameter("workUnit", registration.getWorkUnit());
             countQuery.setParameter("workUnit", registration.getWorkUnit());
         }
-        if (!registration.getSubject().isEmpty()) {
-            dataQuery.setParameter("subject", registration.getSubject());
-            countQuery.setParameter("subject", registration.getSubject());
+        if (!registration.getSubjectName().isEmpty()) {
+            dataQuery.setParameter("subject", registration.getSubjectName());
+            countQuery.setParameter("subject", registration.getSubjectName());
         }
         dataQuery.setFirstResult((int) pageable.getOffset());
         dataQuery.setMaxResults(pageable.getPageSize());
         BigInteger count = (BigInteger) countQuery.getSingleResult();
         Long totalNum = count.longValue();
-        List<Registration> list=dataQuery.getResultList();
+        List<User> list=dataQuery.getResultList();
         resData.put("totalNum",totalNum);
         resData.put("list",list);
         return resData;

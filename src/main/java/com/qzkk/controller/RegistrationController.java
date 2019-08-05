@@ -1,7 +1,7 @@
 package com.qzkk.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qzkk.domain.Registration;
+import com.qzkk.domain.User;
 import com.qzkk.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
 
     @PostMapping("/perRegistration")
-    public JSONObject perRegistration(Registration registration){
+    public JSONObject perRegistration(User registration){
         JSONObject res =new JSONObject();
         try{
             registrationService.save(registration);
@@ -34,11 +34,13 @@ public class RegistrationController {
      * @return
      */
     @PostMapping("/findByConditions")
-    public JSONObject findByConditions(Registration registration){
+    public JSONObject findByConditions(User registration){
         JSONObject res=new JSONObject();
         try {
+            Integer size=0;
+            Integer offset=0;
             JSONObject resData=registrationService
-                    .selectToPageByDynamic(registration);
+                    .selectToPageByDynamic(size,offset,registration);
             res.put("code","200");
             //数据本体内容
             res.put("list",resData.get("list"));
@@ -57,11 +59,13 @@ public class RegistrationController {
      * @return
      */
     @PostMapping("/findAllToPage")
-    public JSONObject findAllToPage(Registration registration){
+    public JSONObject findAllToPage(User registration){
         JSONObject res=new JSONObject();
         try {
-            Page<Registration> pageObject=registrationService
-                    .findAllToPage(registration.getPageOffset(),registration.getPageSize());
+            Integer size=0;
+            Integer offset=0;
+            Page<User> pageObject=registrationService
+                    .findAllToPage(size,offset);
             res.put("code","200");
             //数据本体内容
             res.put("list",pageObject.getContent());
