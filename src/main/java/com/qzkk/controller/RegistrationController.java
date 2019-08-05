@@ -1,6 +1,7 @@
 package com.qzkk.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qzkk.dao.UserRepository;
 import com.qzkk.domain.User;
 import com.qzkk.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class RegistrationController {
 
     @Autowired
     private RegistrationService registrationService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/perRegistration")
     public JSONObject perRegistration(User registration){
         JSONObject res =new JSONObject();
+
         try{
+            List<User> tempUser = userRepository.findByAccount(registration.getAccount());
+            if(!tempUser.isEmpty()) {
+                res.put("code", "403");
+                res.put("msg", "account has exist!");
+                return res;
+            }
             registrationService.save(registration);
             res.put("code","200");
             res.put("msg","已成功提交");
@@ -37,10 +49,9 @@ public class RegistrationController {
     public JSONObject findByConditions(User registration){
         JSONObject res=new JSONObject();
         try {
-            Integer size=0;
-            Integer offset=0;
+
             JSONObject resData=registrationService
-                    .selectToPageByDynamic(size,offset,registration);
+                    .selectToPageByDynamic(registration);
             res.put("code","200");
             //数据本体内容
             res.put("list",resData.get("list"));
@@ -62,10 +73,8 @@ public class RegistrationController {
     public JSONObject findAllToPage(User registration){
         JSONObject res=new JSONObject();
         try {
-            Integer size=0;
-            Integer offset=0;
             Page<User> pageObject=registrationService
-                    .findAllToPage(size,offset);
+                    .findAllToPage(registration.getPageOffset(),registration.getPageSize());
             res.put("code","200");
             //数据本体内容
             res.put("list",pageObject.getContent());
