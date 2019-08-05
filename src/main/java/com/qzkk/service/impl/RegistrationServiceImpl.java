@@ -63,7 +63,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         if (!registration.getSubjectName().isEmpty()){
             dataSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%')");
-            countSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%')");
+            countSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%' )");
         }
 
         //创建本地sql查询实例
