@@ -31,5 +31,4 @@ public class GoodController {
         return goodService.viewGoods();
     }
 
-
 }
