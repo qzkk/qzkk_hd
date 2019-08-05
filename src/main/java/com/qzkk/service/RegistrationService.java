@@ -29,7 +29,7 @@ public interface RegistrationService {
      * @param registration
      * @return
      */
-    Page<User> selectToPageByStatic(Integer offset,Integer size,User registration);
+    Page<User> selectToPageByStatic(User registration);
 
     /**
      * 如果有约束条件，并且进行分页
@@ -38,5 +38,5 @@ public interface RegistrationService {
      * @return
      */
 
-    JSONObject selectToPageByDynamic(Integer offset,Integer size,User registration);
+    JSONObject selectToPageByDynamic(User registration);
 }
