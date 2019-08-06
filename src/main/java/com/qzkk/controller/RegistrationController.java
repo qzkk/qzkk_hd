@@ -7,6 +7,7 @@ import com.qzkk.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,6 +38,23 @@ public class RegistrationController {
             res.put("code","500");
             res.put("msg","提交登记表失败，请重新尝试！");
         }
+        return res;
+    }
+
+    @PostMapping("/delUser")
+    public JSONObject delUser(@RequestParam long uid){
+        JSONObject res=new JSONObject();
+        try {
+            User oldUser = userRepository.findByUId(uid);
+            oldUser.setDel(1);
+            userRepository.save(oldUser);
+            res.put("code", "200");
+            res.put("msg", "删除成功!");
+        }catch (Exception e){
+            res.put("code", "500");
+            res.put("msg", "删除失败!");
+        }
+
         return res;
     }
 
@@ -74,7 +92,7 @@ public class RegistrationController {
         JSONObject res=new JSONObject();
         try {
             Page<User> pageObject=registrationService
-                    .findAllToPage(registration.getPageOffset(),registration.getPageSize());
+                    .selectToPageByStatic(registration);
             res.put("code","200");
             //数据本体内容
             res.put("list",pageObject.getContent());
