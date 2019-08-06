@@ -31,4 +31,7 @@ public interface GoodService {
 
     //拒绝通过物资申请
     JSONObject refuseApplication(long gaid);
+
+    //返回有剩余的物资类型
+    JSONObject getLeftGoodTypes();
 }

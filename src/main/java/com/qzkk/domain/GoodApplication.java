@@ -34,7 +34,7 @@ public class GoodApplication {
     private int number;
 
     //申请的时间
-    private Date applicationTime;
+    private Date applicationTime = new Date();
 
     //通过申请的时间
     private Date startDate;

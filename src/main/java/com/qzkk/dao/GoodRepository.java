@@ -3,8 +3,10 @@ package com.qzkk.dao;
 import com.qzkk.domain.Good;
 import com.qzkk.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jzc
@@ -21,5 +23,11 @@ public interface GoodRepository extends JpaRepository<Good, Long> {
 
     //根据Identifier查询物资
     Good findByIdentifier(String identifier);
+
+    //返回还有剩余的物资信息
+    //@Query(value = "select new map(u.userName, ui.name, ui.gender, ui.description) from UserInfo ui, User u where u.id = ui.userId")
+    @Query(value = "select g from Good g where g.number-g.usingNumber-g.applyingNumber>0")
+    List<Good> getLeftGoodTypes();
+
 
 }
