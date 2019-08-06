@@ -28,6 +28,13 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
      */
     Team findByTId(long Tid);
 
+    /**
+     * 通过名称查找小队
+     * @param name
+     * @return
+     */
+    List<Team> findByName(String name);
+
 
 
 }

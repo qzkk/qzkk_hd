@@ -26,6 +26,9 @@ public interface TeamService {
     //删除小队
     JSONObject delTeam(long tid);
 
+    //创建小队
+    JSONObject creatTeam(Team team);
+
 
 
 }

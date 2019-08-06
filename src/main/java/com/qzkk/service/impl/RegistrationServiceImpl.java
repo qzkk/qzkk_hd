@@ -31,9 +31,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public Page<User> selectToPageByStatic(Integer offset,Integer size,User registration) {
+    public Page<User> selectToPageByStatic(User registration) {
 
-        Pageable pageable = PageRequest.of(offset,size, Sort.Direction.ASC, "rid");
+        Pageable pageable = PageRequest.of(registration.getPageOffset(),registration.getPageSize(), Sort.Direction.ASC, "u_id");
         Page<User> registrations=registrationRepository.findToPage(registration.getName(),pageable);
         return registrations;
     }
@@ -46,11 +46,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public JSONObject selectToPageByDynamic(Integer offset,Integer size,User registration) {
+    public JSONObject selectToPageByDynamic(User registration) {
         JSONObject resData=new JSONObject();
-        Pageable pageable = PageRequest.of(offset,size, Sort.Direction.ASC, "rid");
-        StringBuffer dataSql = new StringBuffer("select * from registration a where 1=1");
-        StringBuffer countSql = new StringBuffer("select count(1) from registration a where 1=1");
+        Pageable pageable = PageRequest.of(registration.getPageOffset(),registration.getPageSize(),
+                Sort.Direction.ASC, "rid");
+        StringBuffer dataSql = new StringBuffer("select * from user a where a.del=0 and a.examine=1");
+        StringBuffer countSql = new StringBuffer("select count(1) from user a where a.del=0 and a.examine=1");
         //进行动态添加约束
         if (!registration.getName().isEmpty()){
             dataSql.append(" and a.name like CONCAT('%',:name,'%')");
@@ -61,10 +62,10 @@ public class RegistrationServiceImpl implements RegistrationService {
             countSql.append(" and a.work_unit like CONCAT('%',:workUnit,'%')");
         }
         if (!registration.getSubjectName().isEmpty()){
-            dataSql.append(" and a.subject like CONCAT('%',:subject,'%')");
-            countSql.append(" and a.subject like CONCAT('%',:subject,'%')");
+            dataSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%')");
+            countSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%' )");
         }
-
+        dataSql.append(" order by a.u_id desc");
         //创建本地sql查询实例
         Query dataQuery = (Query) entityManager.createNativeQuery(dataSql.toString(), User.class);
         //查询总共有多少条数据，用于前端分页
@@ -80,8 +81,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             countQuery.setParameter("workUnit", registration.getWorkUnit());
         }
         if (!registration.getSubjectName().isEmpty()) {
-            dataQuery.setParameter("subject", registration.getSubjectName());
-            countQuery.setParameter("subject", registration.getSubjectName());
+            dataQuery.setParameter("subjectName", registration.getSubjectName());
+            countQuery.setParameter("subjectName", registration.getSubjectName());
         }
         dataQuery.setFirstResult((int) pageable.getOffset());
         dataQuery.setMaxResults(pageable.getPageSize());
