@@ -13,6 +13,8 @@ public interface GoodService {
 
     //添加一种物资
     JSONObject addGood(Good good);
+    //增加物资数量
+    JSONObject addGoodsNumber(String identifier,int addnumber);
 
     //删除一种物资
     JSONObject delGood(long gid);

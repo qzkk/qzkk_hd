@@ -7,6 +7,7 @@ import com.qzkk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,7 +24,14 @@ public class GoodController {
     public JSONObject addGood(Good good) {
         good.setUsingNumber(0);
         good.setApplyingNumber(0);
+        good.setImages("aa");
         return goodService.addGood(good);
+    }
+
+    @PostMapping("/addGoodsNumber")
+    public JSONObject addGood(@RequestParam String identifier,@RequestParam int addnumber) {
+
+            return goodService.addGoodsNumber(identifier,addnumber);
     }
 
     @GetMapping("/getGoodList")

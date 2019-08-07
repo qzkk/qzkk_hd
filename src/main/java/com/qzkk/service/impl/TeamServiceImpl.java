@@ -95,16 +95,16 @@ public class TeamServiceImpl implements TeamService{
         //排除队伍名称相同
         tempTeam = teamRepository.findByName(team.getName());
         if(!tempTeam.isEmpty()){
-            res.put("code","");
+            res.put("code","401");
             res.put("msg","name has exist");
             return res;
         }
-
-        teamRepository.save(team);
-
-        res.put("code","200");
-        res.put("msg","commit successfully");
-        return res;
+        else {
+            teamRepository.save(team);
+            res.put("code","200");
+            res.put("msg","team has creat");
+            return res;
+        }
     }
 //测试上传
 

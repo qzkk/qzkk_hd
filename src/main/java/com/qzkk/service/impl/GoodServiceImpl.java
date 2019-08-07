@@ -34,7 +34,7 @@ public class GoodServiceImpl implements GoodService {
         String identifier = good.getIdentifier();
         Good tempGood = goodRepository.findByIdentifier(identifier);
         if(tempGood != null) {
-            res.put("code", "");
+            res.put("code", "404");
             res.put("msg", "该物资已经存在！");
             return res;
         } else {
@@ -43,6 +43,17 @@ public class GoodServiceImpl implements GoodService {
             res.put("msg", "该物资已经存在！");
             return res;
         }
+    }
+
+    @Override
+    public JSONObject addGoodsNumber(String identifier,int addnumber){
+        JSONObject res = new JSONObject();
+        Good good = goodRepository.findByIdentifier(identifier);
+        good.setNumber(good.getNumber()+addnumber);
+        goodRepository.save(good);
+        res.put("code","200");
+        res.put("msg","success");
+        return res;
     }
 
     @Override
