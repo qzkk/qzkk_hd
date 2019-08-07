@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qzkk.domain.GoodApplication;
 import com.qzkk.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,11 @@ public class GoodApplicationController {
     @PostMapping("/refuseApplication")
     public JSONObject refuseApplication(@RequestParam long gaid) {
         return goodService.refuseApplication(gaid);
+    }
+
+    @GetMapping("/getGoodTypes")
+    public JSONObject getGoodTypes() {
+        return goodService.getLeftGoodTypes();
     }
 
 }

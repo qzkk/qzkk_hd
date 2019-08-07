@@ -1,5 +1,6 @@
 package com.qzkk.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.GoodApplicationRepository;
@@ -11,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: jzc
@@ -93,13 +93,31 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public JSONObject addGoodApplication(GoodApplication goodApplication) {
         JSONObject res = new JSONObject();
-
-        goodApplicationRepository.save(goodApplication);
-        res.put("code", "200");
-        res.put("msg", "submit successfully");
-
-        return res;
-
+        Good oldGood = goodRepository.findByGId(goodApplication.getGId());
+        int applyingNum = oldGood.getApplyingNumber();
+        int usingNum = oldGood.getUsingNumber();
+        int totalNum = oldGood.getNumber();
+        int nowApplyNum = goodApplication.getNumber();
+        if(totalNum - applyingNum - usingNum <= 0) {
+            res.put("code","500");
+            res.put("msg", "该物资已经申请完了！！");
+            return res;
+        } else if(totalNum - applyingNum - usingNum - nowApplyNum < 0) {
+            System.out.println(totalNum);
+            System.out.println(applyingNum);
+            System.out.println(usingNum);
+            System.out.println(nowApplyNum);
+            res.put("code","501");
+            res.put("msg", "申请数量以超出申请数量！！");
+            return res;
+        } else {
+            oldGood.setApplyingNumber(oldGood.getApplyingNumber() + goodApplication.getNumber());
+            goodRepository.save(oldGood);
+            goodApplicationRepository.save(goodApplication);
+            res.put("code", "200");
+            res.put("msg", "submit successfully");
+            return res;
+        }
     }
 
     @Override
@@ -128,5 +146,26 @@ public class GoodServiceImpl implements GoodService {
         res.put("msg", "submit successfully");
         res.put("code", "200");
         return res;
+    }
+
+    @Override
+    public JSONObject getLeftGoodTypes() {
+        JSONObject res = new JSONObject();
+        List<Good> list = goodRepository.getLeftGoodTypes();
+        JSONArray goodsArray = new JSONArray();
+        goodsArray = (JSONArray) JSONArray.toJSON(list);
+
+        res.put("data",goodsArray);
+        res.put("code", "200");
+        return res;
+
+//        for(Map map : result) {
+//            JsonObject j = new JsonObject();
+//            j.addProperty(attrName, val);
+//            list.add(j);
+//        }
+//        gson.toJson(list);
+
+
     }
 }
