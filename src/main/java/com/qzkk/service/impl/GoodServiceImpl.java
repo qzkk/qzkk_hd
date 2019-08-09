@@ -168,4 +168,73 @@ public class GoodServiceImpl implements GoodService {
 
 
     }
+
+    @Override
+    public JSONObject getGoodAplyByUid(long uid) {
+        JSONObject res = new JSONObject();
+        try {
+            List<GoodApplication> list = goodApplicationRepository.findAllByUId(uid);
+            JSONArray aplyArray = new JSONArray();
+            aplyArray = (JSONArray) JSONArray.toJSON(list);
+
+            res.put("list",aplyArray);
+            res.put("code", "200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code", "500");
+        }
+
+        return res;
+    }
+
+    @Override
+    public JSONObject abandonApply(long gaid,long gid,int number) {
+        JSONObject res = new JSONObject();
+        try {
+            Good oldGood=goodRepository.findByGId(gid);
+            oldGood.setApplyingNumber(oldGood.getApplyingNumber()-number);
+            goodRepository.save(oldGood);
+            goodApplicationRepository.deleteOne(gaid);
+            res.put("code", "200");
+            res.put("msg", "操作成功");
+        }catch (Exception e){
+            res.put("code", "500");
+            res.put("msg", "操作失败");
+        }
+
+        return res;
+    }
+
+    @Override
+    public JSONObject returnGoods(long gaid,long gid,int number) {
+        JSONObject res = new JSONObject();
+        try {
+            Good oldGood=goodRepository.findByGId(gid);
+            oldGood.setApplyingNumber(oldGood.getUsingNumber()-number);
+            goodRepository.save(oldGood);
+            goodApplicationRepository.deleteOne(gaid);
+            res.put("code", "200");
+            res.put("msg", "操作成功");
+        }catch (Exception e){
+            res.put("code", "500");
+            res.put("msg", "操作失败");
+        }
+
+        return res;
+    }
+
+    @Override
+    public JSONObject deleteApply(long gaid) {
+        JSONObject res = new JSONObject();
+        try {
+            goodApplicationRepository.deleteOne(gaid);
+            res.put("code", "200");
+            res.put("msg", "操作成功");
+        }catch (Exception e){
+            res.put("code", "500");
+            res.put("msg", "操作失败");
+        }
+
+        return res;
+    }
 }

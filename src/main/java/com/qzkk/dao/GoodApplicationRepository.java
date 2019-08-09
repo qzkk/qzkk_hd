@@ -3,6 +3,11 @@ package com.qzkk.dao;
 
 import com.qzkk.domain.GoodApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author: jzc
@@ -16,4 +21,11 @@ public interface GoodApplicationRepository extends JpaRepository<GoodApplication
      * @return GoodApplication
      */
     GoodApplication findByGaId(long GaId);
+
+    List<GoodApplication> findAllByUId(long uid);
+
+    @Modifying
+    @Transactional
+    @Query("delete from GoodApplication g where g.gaId =?1")
+    void deleteOne(long gaId);
 }

@@ -5,10 +5,9 @@ import com.qzkk.domain.Team;
 import com.qzkk.domain.User;
 import com.qzkk.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author: jzc
@@ -25,9 +24,16 @@ public class TeamController {
         return teamService.addTeamApplication(team);
     }
 
-    @GetMapping("/getTeamList")
-    public JSONObject getTeamList() {
-        return teamService.viewTeams();
+    @PostMapping("/getTeamList")
+    public JSONObject getTeamList(@RequestParam long uid) {
+        return teamService.viewTeams(uid);
+    }
+
+    @PostMapping("/addUserToTeam")
+    public JSONObject addUserToTeam(@RequestBody User[] users) {
+        System.out.println();
+        return null;
+        //return teamService.addUserToTeam(users);
     }
 
     @PostMapping("/examineTeamApplication")
@@ -39,6 +45,17 @@ public class TeamController {
     public JSONObject refuseApplication(@RequestParam long tid) {
         return teamService.refuseApplication(tid);
     }
+
+    @PostMapping("/getMemberAboutTeam")
+    public JSONObject getMemberAboutTeam(@RequestParam long uid) {
+        return teamService.getMemberAboutTeam(uid);
+    }
+
+    @PostMapping("/delTeamMember")
+    public JSONObject delTeamMember(@RequestParam long uid) {
+        return teamService.delTeamMember(uid);
+    }
+
 
 
 }

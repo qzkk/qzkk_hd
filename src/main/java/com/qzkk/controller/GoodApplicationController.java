@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GoodApplicationController {
     @Autowired
-    GoodService goodService;
+    private GoodService goodService;
 
     @PostMapping("/addGoodApplication")
     public JSONObject addGoodApplication(GoodApplication goodApplication) {
@@ -37,6 +37,25 @@ public class GoodApplicationController {
     @GetMapping("/getGoodTypes")
     public JSONObject getGoodTypes() {
         return goodService.getLeftGoodTypes();
+    }
+
+    @PostMapping("/getGoodAplyByUid")
+    public JSONObject getGoodAplyForUid(@RequestParam long uid) {
+        return goodService.getGoodAplyByUid(uid);
+    }
+
+    @PostMapping("/abandonApply")
+    public JSONObject abandonApply(@RequestParam long gaid,@RequestParam long gid,@RequestParam int number) {
+        return goodService.abandonApply(gaid,gid,number);
+    }
+
+    @PostMapping("/returnGoods")
+    public JSONObject returnGoods(@RequestParam long gaid,@RequestParam long gid,@RequestParam int number) {
+        return goodService.returnGoods(gaid,gid,number);
+    }
+    @PostMapping("/deleteApply")
+    public JSONObject deleteApply(@RequestParam long gaid) {
+        return goodService.deleteApply(gaid);
     }
 
 }

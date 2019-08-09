@@ -4,6 +4,8 @@ import com.qzkk.domain.Team;
 import com.qzkk.domain.User;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -34,6 +36,11 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
      * @return
      */
     List<Team> findByName(String name);
+
+    List<Team> findByUId(long Uid);
+
+    @Query(value = "select u.u_id,u.name,t.name as tname from user u join team t on t.t_id=u.t_id WHERE t.u_id=:uid",nativeQuery = true)
+    List<Object[]> getMemberAboutTeam(@Param("uid") long uid);
 
 
 

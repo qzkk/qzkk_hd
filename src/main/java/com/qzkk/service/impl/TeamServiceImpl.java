@@ -3,8 +3,12 @@ package com.qzkk.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.TeamRepository;
+import com.qzkk.dao.UserRepository;
 import com.qzkk.domain.Team;
+import com.qzkk.domain.User;
 import com.qzkk.service.TeamService;
+import com.qzkk.utils.CastEntity;
+import com.qzkk.vo.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class TeamServiceImpl implements TeamService{
 
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public JSONObject addTeamApplication(Team team) {
@@ -60,16 +66,17 @@ public class TeamServiceImpl implements TeamService{
     }
 
     @Override
-    public JSONObject viewTeams() {
+    public JSONObject viewTeams(long uid) {
         JSONObject res = new JSONObject();
-        JSONArray teamsArray = new JSONArray();
+        try {
+            List<Team> list = teamRepository.findByUId(uid);
+            res.put("list", list);
+            res.put("code", "200");
+        }catch (Exception e){
+            res.put("msg", "查询小队失败");
+            res.put("code", "500");
+        }
 
-        List<Team> teams = teamRepository.findAll();
-        teamsArray = (JSONArray) JSONArray.toJSON(teams);
-        res.put("teams", teamsArray);
-        res.put("length", teamsArray.size());
-        res.put("code", "200");
-        res.put("msg", "query successfully!");
         return res;
     }
 
@@ -100,11 +107,64 @@ public class TeamServiceImpl implements TeamService{
             return res;
         }
         else {
+            team.setState(1);
             teamRepository.save(team);
             res.put("code","200");
             res.put("msg","team has creat");
             return res;
         }
+    }
+
+    @Override
+    public JSONObject addUserToTeam(List<User> users) {
+        JSONObject res = new JSONObject();
+        for (int i=0;i<users.size();i++){
+            User oldUser = userRepository.findByUId(users.get(i).getUId());
+            oldUser.setTId(users.get(i).getTId());
+            try {
+                userRepository.save(oldUser);
+                res.put("code", "200");
+                res.put("msg", "添加成功");
+            }catch (Exception e){
+                res.put("code", "500");
+                res.put("msg", "添加失败");
+                return res;
+            }
+        }
+
+        return res;
+    }
+
+    @Override
+    public JSONObject getMemberAboutTeam(long uid) {
+        List<Object[]> list=teamRepository.getMemberAboutTeam(uid);
+        JSONObject res=new JSONObject();
+        try {
+            List<TeamMember> teamMembers = CastEntity.castEntity(list, TeamMember.class);
+            res.put("code", "200");
+            res.put("list", teamMembers);
+            res.put("msg", "查询成功");
+        } catch (Exception e) {
+            res.put("code", "500");
+            res.put("msg", "查询失败");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject delTeamMember(long uid) {
+        JSONObject res=new JSONObject();
+        User oldUser=userRepository.findByUId(uid);
+        oldUser.setTId(0);
+        try {
+            userRepository.save(oldUser);
+            res.put("code", "200");
+            res.put("msg", "删除成功");
+        }catch (Exception e){
+            res.put("code", "200");
+            res.put("msg", "删除失败");
+        }
+        return res;
     }
 //测试上传
 

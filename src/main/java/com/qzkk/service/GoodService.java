@@ -36,4 +36,8 @@ public interface GoodService {
 
     //返回有剩余的物资类型
     JSONObject getLeftGoodTypes();
+    JSONObject getGoodAplyByUid(long uid);
+    JSONObject abandonApply(long gaid,long gid,int number);
+    JSONObject returnGoods(long gaid,long gid ,int number);
+    JSONObject deleteApply(long gaid);
 }
