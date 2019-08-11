@@ -38,6 +38,9 @@ public interface TeamService {
 
     JSONObject delTeamMember(long uid);
 
+    //查看小队信息
+    JSONObject viewTeamInfo(long uid);
+
 
 
 }

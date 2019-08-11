@@ -28,4 +28,12 @@ public interface GoodApplicationRepository extends JpaRepository<GoodApplication
     @Transactional
     @Query("delete from GoodApplication g where g.gaId =?1")
     void deleteOne(long gaId);
+
+    /**
+     * 查询某小队申请成功的物资
+     * @param uid 队长编号
+     * @param i i=1审核通过
+     * @return
+     */
+    List<GoodApplication> findAllByUIdAndState(long uid, int i);
 }

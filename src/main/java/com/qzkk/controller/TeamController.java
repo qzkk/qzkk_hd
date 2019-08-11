@@ -56,6 +56,11 @@ public class TeamController {
         return teamService.delTeamMember(uid);
     }
 
+    @PostMapping("/getTeamInfo")
+    public JSONObject getTeamInfo(@RequestParam long uid) {
+        return teamService.viewTeamInfo(uid);
+    }
+
 
 
 }
