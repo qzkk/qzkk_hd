@@ -2,8 +2,12 @@ package com.qzkk.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.qzkk.dao.GoodApplicationRepository;
+import com.qzkk.dao.GoodRepository;
 import com.qzkk.dao.TeamRepository;
 import com.qzkk.dao.UserRepository;
+import com.qzkk.domain.Good;
+import com.qzkk.domain.GoodApplication;
 import com.qzkk.domain.Team;
 import com.qzkk.domain.User;
 import com.qzkk.service.TeamService;
@@ -27,6 +31,10 @@ public class TeamServiceImpl implements TeamService{
     private TeamRepository teamRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private GoodApplicationRepository goodApplicationRepository;
+    @Autowired
+    private GoodRepository goodRepository;
 
     @Override
     public JSONObject addTeamApplication(Team team) {
@@ -166,6 +174,44 @@ public class TeamServiceImpl implements TeamService{
         }
         return res;
     }
+
+    //查看小队信息
+    @Override
+    public JSONObject viewTeamInfo(long uid) {
+        JSONObject res=new JSONObject();
+        JSONArray membersArray = new JSONArray();
+        JSONArray goodsInfoArray = new JSONArray();
+
+        User user = userRepository.findByUId(uid);
+        long tId = user.getTId();
+        Team team = teamRepository.findByTId(tId);
+        res.put("TeamName", team.getName());
+        res.put("Task", team.getKkTask());
+        res.put("Site", team.getResearchSite());
+        res.put("Content", team.getSubjectContent());
+
+        long captionId = team.getUId();
+        User caption = userRepository.findByUId(captionId);
+        List<User> members = userRepository.findByTId(tId);
+        for (User m:members) {
+            membersArray.add(m.getName());
+        }
+        res.put("members", membersArray);
+
+        List<GoodApplication> goodApplications = goodApplicationRepository.findAllByUIdAndState(captionId, 1);
+        for(GoodApplication g : goodApplications ) {
+            JSONObject temp = new JSONObject();
+            Good tempGood = goodRepository.findByGId(g.getGId());
+            temp.put("name", tempGood.getName());
+            temp.put("number", g.getNumber());
+            temp.put("specification", tempGood.getSpecification());
+            goodsInfoArray.add(temp);
+        }
+        res.put("goods", goodsInfoArray);
+        res.put("code", "200");
+        return res;
+    }
+
 //测试上传
 
 }
