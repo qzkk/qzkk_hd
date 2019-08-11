@@ -1,12 +1,15 @@
 package com.qzkk.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.qzkk.domain.Team;
 import com.qzkk.domain.User;
 import com.qzkk.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,10 +33,17 @@ public class TeamController {
     }
 
     @PostMapping("/addUserToTeam")
-    public JSONObject addUserToTeam(@RequestBody User[] users) {
-        System.out.println();
-        return null;
-        //return teamService.addUserToTeam(users);
+    public JSONObject addUserToTeam(@RequestBody String userList) {
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(userList);
+        JsonArray jsonArray= jsonObject.getAsJsonArray("userList");
+        Gson gson=new Gson();
+        List<User> userList1=new ArrayList<>();
+        for (JsonElement userElemet:jsonArray){
+            User user=gson.fromJson(userElemet,new TypeToken<User>(){}.getType());
+            userList1.add(user);
+        }
+
+        return teamService.addUserToTeam(userList1);
     }
 
     @PostMapping("/examineTeamApplication")

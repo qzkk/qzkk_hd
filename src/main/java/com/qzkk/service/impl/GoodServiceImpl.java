@@ -8,6 +8,9 @@ import com.qzkk.dao.GoodRepository;
 import com.qzkk.domain.Good;
 import com.qzkk.domain.GoodApplication;
 import com.qzkk.service.GoodService;
+import com.qzkk.utils.CastEntity;
+import com.qzkk.vo.GoodAplyInfo;
+import com.qzkk.vo.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,19 +97,14 @@ public class GoodServiceImpl implements GoodService {
     public JSONObject addGoodApplication(GoodApplication goodApplication) {
         JSONObject res = new JSONObject();
         Good oldGood = goodRepository.findByGId(goodApplication.getGId());
-        int applyingNum = oldGood.getApplyingNumber();
         int usingNum = oldGood.getUsingNumber();
         int totalNum = oldGood.getNumber();
         int nowApplyNum = goodApplication.getNumber();
-        if(totalNum - applyingNum - usingNum <= 0) {
-            res.put("code","500");
+        if(totalNum - usingNum <= 0) {
+            res.put("code","501");
             res.put("msg", "该物资已经申请完了！！");
             return res;
-        } else if(totalNum - applyingNum - usingNum - nowApplyNum < 0) {
-            System.out.println(totalNum);
-            System.out.println(applyingNum);
-            System.out.println(usingNum);
-            System.out.println(nowApplyNum);
+        } else if(totalNum - usingNum - nowApplyNum < 0) {
             res.put("code","501");
             res.put("msg", "申请数量以超出申请数量！！");
             return res;
@@ -173,11 +171,10 @@ public class GoodServiceImpl implements GoodService {
     public JSONObject getGoodAplyByUid(long uid) {
         JSONObject res = new JSONObject();
         try {
-            List<GoodApplication> list = goodApplicationRepository.findAllByUId(uid);
-            JSONArray aplyArray = new JSONArray();
-            aplyArray = (JSONArray) JSONArray.toJSON(list);
+            List<Object[]> list = goodApplicationRepository.getGoodAplyInfoByUid(uid);
+            List<GoodAplyInfo> goodAplyInfos = CastEntity.castEntity(list, GoodAplyInfo.class);
 
-            res.put("list",aplyArray);
+            res.put("list",goodAplyInfos);
             res.put("code", "200");
         }catch (Exception e){
             res.put("msg","查询失败");

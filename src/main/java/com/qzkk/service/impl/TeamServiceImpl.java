@@ -137,9 +137,9 @@ public class TeamServiceImpl implements TeamService{
 
     @Override
     public JSONObject getMemberAboutTeam(long uid) {
-        List<Object[]> list=teamRepository.getMemberAboutTeam(uid);
         JSONObject res=new JSONObject();
         try {
+            List<Object[]> list=teamRepository.getMemberAboutTeam(uid);
             List<TeamMember> teamMembers = CastEntity.castEntity(list, TeamMember.class);
             res.put("code", "200");
             res.put("list", teamMembers);
