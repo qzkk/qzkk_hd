@@ -37,20 +37,6 @@ public class User {
     //工作单位
     private String workUnit;
 
-    //专题主题
-    private String subjectName;
-
-    //科考区域
-    private String researchSite;
-
-    //服务保障需求
-    private String demand;
-
-    //来青日期
-    private String comeDate;
-
-    //离青时间
-    private String backDate;
 
     //身份证号
     private String idCard;
@@ -66,9 +52,6 @@ public class User {
 
     //是否已经删除
     private int del;
-
-    //所在小队编号
-    private long tId;
 
     //用于分页，对于实际数据没有作用，就是传输数据的时候方便一些
     private Integer pageOffset;

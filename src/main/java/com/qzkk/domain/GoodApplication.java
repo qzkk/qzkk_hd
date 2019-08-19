@@ -24,8 +24,14 @@ public class GoodApplication {
     //物资编号
     private long gId;
 
-    //申请人编号
+    //申请人编号（可以不用，暂时留着吧）
     private long uId;
+
+    //任务id
+    private long taskId;
+
+    //小队id
+    private long teamId;
 
     //审核人编号
     private long approverId = 0;
