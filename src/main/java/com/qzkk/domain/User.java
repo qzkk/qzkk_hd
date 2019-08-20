@@ -58,4 +58,10 @@ public class User {
 
     //用于分页，对于实际数据没有作用，就是传输数据的时候方便一些
     private Integer pageSize;
+
+    //来青日期
+    private String comeDate;
+
+    //离青时间
+    private String backDate;
 }

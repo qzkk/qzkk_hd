@@ -30,12 +30,6 @@ public class Task {
     //服务保障需求
     private String demand;
 
-    //来青日期
-    private String comeDate;
-
-    //离青时间
-    private String backDate;
-
     //审核的状态：0待审核，1审核通过，-1审核不通过
     private int state = 0;
 }
