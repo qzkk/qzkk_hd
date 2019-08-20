@@ -26,14 +26,6 @@ public class Team {
     //小队名称
     private String name;
 
-    //科考任务
-    private String kkTask;
-
-    //专题内容
-    private String subjectContent;
-
-    //科考区域
-    private String researchSite;
 
     //创建时间(暂时功能用不上)
     private Date createTime;
