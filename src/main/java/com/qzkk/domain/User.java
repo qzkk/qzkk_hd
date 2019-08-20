@@ -19,6 +19,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long uId;
 
+    //为了添加成员的功能暂时先用着，其实没有实际意义
+    private long tId;
+
     //密码（MD5加密）
     private String psd;
 

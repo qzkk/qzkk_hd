@@ -30,7 +30,12 @@ public interface GoodApplicationRepository extends JpaRepository<GoodApplication
     @Query("delete from GoodApplication g where g.gaId =?1")
     void deleteOne(long gaId);
 
-    @Query(value = "select ga.ga_id,ga.g_id,ga.u_id,ga.number,ga.description,ga.state,g.name,g.identifier from good_application ga JOIN good g on ga.g_id=g.g_id where ga.u_id=:uid",nativeQuery = true)
+    @Query(value = "select ga.ga_id,ga.g_id,ga.u_id,ga.number,ga.description,ga.state,g.name,g.identifier,te.name as tname,ta.subject_name as sn from good_application ga \n" +
+            "JOIN good g on ga.g_id=g.g_id \n" +
+            "join team te on ga.team_id=te.t_id\n" +
+            "join task ta on ga.task_id=ta.id\n" +
+            "where ga.u_id=:uid\n" +
+            "order BY ga.team_id",nativeQuery = true)
     List<Object[]> getGoodAplyInfoByUid(@Param("uid") long uid);
     /**
      * 查询某小队申请成功的物资

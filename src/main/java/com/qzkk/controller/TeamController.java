@@ -62,8 +62,8 @@ public class TeamController {
     }
 
     @PostMapping("/delTeamMember")
-    public JSONObject delTeamMember(@RequestParam long uid) {
-        return teamService.delTeamMember(uid);
+    public JSONObject delTeamMember(@RequestParam long id) {
+        return teamService.delTeamMember(id);
     }
 
     @PostMapping("/getTeamInfo")

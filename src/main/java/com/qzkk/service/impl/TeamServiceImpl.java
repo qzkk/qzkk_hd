@@ -2,14 +2,8 @@ package com.qzkk.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.qzkk.dao.GoodApplicationRepository;
-import com.qzkk.dao.GoodRepository;
-import com.qzkk.dao.TeamRepository;
-import com.qzkk.dao.UserRepository;
-import com.qzkk.domain.Good;
-import com.qzkk.domain.GoodApplication;
-import com.qzkk.domain.Team;
-import com.qzkk.domain.User;
+import com.qzkk.dao.*;
+import com.qzkk.domain.*;
 import com.qzkk.service.TeamService;
 import com.qzkk.utils.CastEntity;
 import com.qzkk.vo.TeamMember;
@@ -35,6 +29,8 @@ public class TeamServiceImpl implements TeamService{
     private GoodApplicationRepository goodApplicationRepository;
     @Autowired
     private GoodRepository goodRepository;
+    @Autowired
+    private TeamUserRespository teamUserRespository;
 
     @Override
     public JSONObject addTeamApplication(Team team) {
@@ -127,10 +123,11 @@ public class TeamServiceImpl implements TeamService{
     public JSONObject addUserToTeam(List<User> users) {
         JSONObject res = new JSONObject();
         for (int i=0;i<users.size();i++){
-            User oldUser = userRepository.findByUId(users.get(i).getUId());
-            oldUser.setTId(users.get(i).getTId());
+            Team_User team_user=new Team_User();
+            team_user.setTeamId(users.get(i).getTId());
+            team_user.setUserId(users.get(i).getUId());
             try {
-                userRepository.save(oldUser);
+                teamUserRespository.save(team_user);
                 res.put("code", "200");
                 res.put("msg", "添加成功");
             }catch (Exception e){
@@ -162,10 +159,10 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public JSONObject delTeamMember(long uid) {
         JSONObject res=new JSONObject();
-        User oldUser=userRepository.findByUId(uid);
-        oldUser.setTId(0);
+        //oldUser.setTId(0);
+
         try {
-            userRepository.save(oldUser);
+            teamUserRespository.deleteOne(uid);
             res.put("code", "200");
             res.put("msg", "删除成功");
         }catch (Exception e){
@@ -183,32 +180,32 @@ public class TeamServiceImpl implements TeamService{
         JSONArray goodsInfoArray = new JSONArray();
 
         User user = userRepository.findByUId(uid);
-        long tId = user.getTId();
-        Team team = teamRepository.findByTId(tId);
-        res.put("TeamName", team.getName());
-        res.put("Task", team.getKkTask());
-        res.put("Site", team.getResearchSite());
-        res.put("Content", team.getSubjectContent());
+        //long tId = user.getTId();
+       // Team team = teamRepository.findByTId(tId);
+//        res.put("TeamName", team.getName());
+//        res.put("Task", team.getKkTask());
+//        res.put("Site", team.getResearchSite());
+//        res.put("Content", team.getSubjectContent());
 
-        long captionId = team.getUId();
-        User caption = userRepository.findByUId(captionId);
-        List<User> members = userRepository.findByTId(tId);
-        for (User m:members) {
-            membersArray.add(m.getName());
-        }
+      //  long captionId = team.getUId();
+       // User caption = userRepository.findByUId(captionId);
+        //List<User> members = userRepository.findByTId(tId);
+//        for (User m:members) {
+//            membersArray.add(m.getName());
+//        }
         res.put("members", membersArray);
 
-        List<GoodApplication> goodApplications = goodApplicationRepository.findAllByUIdAndState(captionId, 1);
-        for(GoodApplication g : goodApplications ) {
-            JSONObject temp = new JSONObject();
-            Good tempGood = goodRepository.findByGId(g.getGId());
-            temp.put("name", tempGood.getName());
-            temp.put("number", g.getNumber());
-            temp.put("specification", tempGood.getSpecification());
-            goodsInfoArray.add(temp);
-        }
-        res.put("goods", goodsInfoArray);
-        res.put("code", "200");
+        //List<GoodApplication> goodApplications = goodApplicationRepository.findAllByUIdAndState(captionId, 1);
+//        for(GoodApplication g : goodApplications ) {
+//            JSONObject temp = new JSONObject();
+//            Good tempGood = goodRepository.findByGId(g.getGId());
+//            temp.put("name", tempGood.getName());
+//            temp.put("number", g.getNumber());
+//            temp.put("specification", tempGood.getSpecification());
+//            goodsInfoArray.add(temp);
+//        }
+//        res.put("goods", goodsInfoArray);
+//        res.put("code", "200");
         return res;
     }
 

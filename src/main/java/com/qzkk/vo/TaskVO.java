@@ -5,21 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamMember {
-
+public class TaskVO {
     private BigInteger id;
-
-    private BigInteger uId;
-
-    //真实姓名
-    private String name;
-
-
-    private String tname;
-
+    private String sn;
 
 }

@@ -31,5 +31,9 @@ public class GoodAplyInfo {
 
     private String identifier;
 
+    private String tname;
+
+    private String sn;
+
 
 }

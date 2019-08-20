@@ -39,7 +39,10 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     List<Team> findByUId(long Uid);
 
-    @Query(value = "select u.u_id,u.name,t.name as tname from user u join team t on t.t_id=u.t_id WHERE t.u_id=:uid",nativeQuery = true)
+    @Query(value = "select tu.id,u.u_id,u.name,t.name as tname from team_user tu \n" +
+            "join user u on tu.user_id=u.u_id\n" +
+            "join team t on t.t_id=tu.team_id\n" +
+            "where t.u_id=:uid ORDER BY t.t_id",nativeQuery = true)
     List<Object[]> getMemberAboutTeam(@Param("uid") long uid);
 
 

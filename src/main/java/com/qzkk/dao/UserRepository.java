@@ -37,11 +37,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUId(long Uid);
 
-    /**
-     * 查找同一小队的队员
-     * @param Tid
-     * @return List<User>
-     */
-    List<User> findByTId(long Tid);
 
 }

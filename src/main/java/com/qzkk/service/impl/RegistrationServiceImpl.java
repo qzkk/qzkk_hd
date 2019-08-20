@@ -61,10 +61,6 @@ public class RegistrationServiceImpl implements RegistrationService {
             dataSql.append(" and a.work_unit like CONCAT('%',:workUnit,'%')");
             countSql.append(" and a.work_unit like CONCAT('%',:workUnit,'%')");
         }
-        if (!registration.getSubjectName().isEmpty()){
-            dataSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%')");
-            countSql.append(" and a.subject_name like CONCAT('%',:subjectName,'%' )");
-        }
         dataSql.append(" order by a.u_id desc");
         //创建本地sql查询实例
         Query dataQuery = (Query) entityManager.createNativeQuery(dataSql.toString(), User.class);
@@ -80,10 +76,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             dataQuery.setParameter("workUnit", registration.getWorkUnit());
             countQuery.setParameter("workUnit", registration.getWorkUnit());
         }
-        if (!registration.getSubjectName().isEmpty()) {
-            dataQuery.setParameter("subjectName", registration.getSubjectName());
-            countQuery.setParameter("subjectName", registration.getSubjectName());
-        }
+
         dataQuery.setFirstResult((int) pageable.getOffset());
         dataQuery.setMaxResults(pageable.getPageSize());
         BigInteger count = (BigInteger) countQuery.getSingleResult();
