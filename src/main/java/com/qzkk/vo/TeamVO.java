@@ -8,13 +8,9 @@ import java.math.BigInteger;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskVO {
-    private BigInteger id;
-    private String demand;
-    private String rs;
-    private String sn;
-    private String st;
+public class TeamVO {
+    private BigInteger tid;
     private String name;
-    private Integer type;
+    private String uname;
     private Integer state;
 }

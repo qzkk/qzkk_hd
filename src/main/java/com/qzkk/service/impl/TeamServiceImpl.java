@@ -111,7 +111,7 @@ public class TeamServiceImpl implements TeamService{
             return res;
         }
         else {
-            team.setState(1);
+            team.setState(0);//待审核状态
             teamRepository.save(team);
             res.put("code","200");
             res.put("msg","team has creat");
