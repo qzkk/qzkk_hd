@@ -96,6 +96,21 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public JSONObject selectChargedTeam(long uid) {
+        JSONObject res = new JSONObject();
+        try{
+            List<Object[]> list = taskRepository.selectChargedTeam(uid);
+            List<TeamVO> teamVOS = CastEntity.castEntity(list, TeamVO.class);
+            res.put("list",teamVOS);
+            res.put("code", "200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code", "500");
+        }
+        return res;
+    }
+
+    @Override
     public JSONObject deleteTask(long id) {
         JSONObject res = new JSONObject();
         try {
@@ -125,10 +140,24 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public JSONObject aplyTask(Task task) {
+    public JSONObject aplyTask(List<TeamVO> list,Task task) {
         JSONObject res =new JSONObject();
         try {
             taskRepository.save(task);
+            Task taskNewly=taskRepository.selectNewTask();
+            for (int i=0;i<list.size();i++){
+                Team_Task team_task=new Team_Task();
+                team_task.setTaskId(taskNewly.getId());
+                team_task.setTeamId(list.get(i).getTid().longValue());
+                try {
+                    teamTaskRepository.save(team_task);
+                }catch (Exception e){
+                    taskRepository.deleteById(taskNewly.getId());
+                    res.put("code", "500");
+                    res.put("msg", "申请失败，请重新尝试");
+                    return res;
+                }
+            }
             res.put("msg","申请成功");
             res.put("code", "200");
 

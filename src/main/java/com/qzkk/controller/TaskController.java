@@ -39,6 +39,11 @@ public class TaskController {
     public JSONObject selectTeamNotDis(@RequestParam long taid,@RequestParam long uid) {
         return taskService.selectTeamNotDis(taid,uid);
     }
+    @PostMapping("/selectChargedTeam")
+    public JSONObject selectChargedTeam(@RequestParam long uid) {
+        return taskService.selectChargedTeam(uid);
+    }
+
     @PostMapping("/deleteTask")
     public JSONObject deleteTask(@RequestParam long id) {
         return taskService.deleteTask(id);
@@ -48,8 +53,19 @@ public class TaskController {
         return taskService.viewTeamsByTaskId(taid);
     }
     @PostMapping("/aplyTask")
-    public JSONObject aplyTask(Task task) {
-        return taskService.aplyTask(task);
+    public JSONObject aplyTask(@RequestBody String aplyTask) {
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(aplyTask);
+        JsonElement taskEle=jsonObject.get("task");
+        JsonArray jsonArray= jsonObject.getAsJsonArray("teamTaskList");
+        Gson gson=new Gson();
+        Task task=gson.fromJson(taskEle,new TypeToken<Task>(){}.getType());
+        List<TeamVO> teamVOS=new ArrayList<>();
+        for (JsonElement teamTaEle:jsonArray){
+            TeamVO teamVO=gson.fromJson(teamTaEle,new TypeToken<TeamVO>(){}.getType());
+            teamVOS.add(teamVO);
+        }
+
+        return taskService.aplyTask(teamVOS,task);
     }
     @PostMapping("/distributeTa")
     public JSONObject distributeTa(@RequestBody String teamTaskList) {

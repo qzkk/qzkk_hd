@@ -3,9 +3,11 @@ package com.qzkk.dao;
 import com.qzkk.domain.Task;
 import com.qzkk.domain.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -26,5 +28,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Object[]> viewTeamsByTaskId(@Param("taid") long taid);
     @Query(value = "select te.t_id as tid,te.name,u.name as uname,te.state from team te join user u on te.u_id=u.u_id where te.state=1 and te.u_id=:uid and te.t_id not in(select tt.team_id from team_task tt where tt.task_id=:taid)",nativeQuery = true)
     List<Object[]> selectTeamNotDis(@Param("taid") long taid, @Param("uid") long uid);
+    @Query(value = "select te.t_id as tid,te.name,u.name as uname,te.state from team te \n" +
+            "join user u on te.u_id=u.u_id \n" +
+            "where te.state=1 and te.u_id=:uid",nativeQuery = true)
+    List<Object[]> selectChargedTeam(@Param("uid") long uid);
+    @Query(value = "select * from task t order by t.id desc limit 1",nativeQuery = true)
+    Task selectNewTask();
+
 
 }

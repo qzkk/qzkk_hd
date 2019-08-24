@@ -12,9 +12,10 @@ public interface TaskService {
     JSONObject getTaskListByUid(long uid);
     JSONObject getPassedTaskListByUid(long uid);
     JSONObject selectTeamNotDis(long taskid,long uid);
+    JSONObject selectChargedTeam(long uid);
     JSONObject deleteTask(long id);
     JSONObject viewTeamsByTaskId(long taid);
-    JSONObject aplyTask(Task task);
+    JSONObject aplyTask(List<TeamVO> list,Task task);
     JSONObject distributeTa(List<TeamVO> list,long taid);
 
 
