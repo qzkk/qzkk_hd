@@ -47,7 +47,7 @@ public class Good {
     //规格
     private String specification;
 
-    //是否被删除
+    //是否被删除 0没有删除 1删除
     private int del;
 
 }
