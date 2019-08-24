@@ -143,6 +143,11 @@ public class TaskServiceImpl implements TaskService{
     public JSONObject aplyTask(List<TeamVO> list,Task task) {
         JSONObject res =new JSONObject();
         try {
+            if (list.size()==0){
+                res.put("code", "501");
+                res.put("msg", "未选择负责小队，请选择！");
+                return res;
+            }
             taskRepository.save(task);
             Task taskNewly=taskRepository.selectNewTask();
             for (int i=0;i<list.size();i++){

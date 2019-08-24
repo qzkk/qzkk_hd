@@ -30,6 +30,12 @@ public class Task {
     //服务保障需求
     private String demand;
 
+    //服务保障需求
+    private String startDate;
+
+    //服务保障需求
+    private String endDate;
+
     //发布人
     private long uid;
 
