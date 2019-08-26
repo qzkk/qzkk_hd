@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qzkk.domain.Team;
 import com.qzkk.domain.User;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -41,6 +42,11 @@ public interface TeamService {
     //查看小队信息
     JSONObject viewTeamInfo(long uid);
 
+    JSONObject getTeamLists(int state);
+
+    JSONObject teamUserList(BigInteger tId);
+
+    JSONObject examineTeamApplication(Long tId , int state);
 
 
 }
