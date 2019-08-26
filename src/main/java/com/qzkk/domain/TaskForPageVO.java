@@ -1,15 +1,19 @@
-package com.qzkk.vo;
+package com.qzkk.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.math.BigInteger;
+@Entity
+@Table(name="TaskForPageVO")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskVO {
+public class TaskForPageVO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
     private String demand;
     private String rs;
