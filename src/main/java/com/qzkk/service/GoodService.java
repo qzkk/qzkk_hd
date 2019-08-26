@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.qzkk.domain.Good;
 import com.qzkk.domain.GoodApplication;
 
+import java.math.BigInteger;
+
 /**
  * @author: jzc
  * @date: 16/7/2019-下午1:16
@@ -28,6 +30,9 @@ public interface GoodService {
     //申请一种物资
     JSONObject addGoodApplication(GoodApplication goodApplication);
 
+    //查看待审核物资
+    JSONObject getGoodApplicationList(int state);
+
     //审核通过物资申请
     JSONObject examineApplication(long gaid);
 
@@ -40,4 +45,9 @@ public interface GoodService {
     JSONObject abandonApply(long gaid,long gid,int number);
     JSONObject returnGoods(long gaid,long gid ,int number);
     JSONObject deleteApply(long gaid);
+
+    JSONObject delGood(String identifier);
+
+    JSONObject examineGoodApplication(long gaId);
+    JSONObject refuseGoodApplication(long gaId);
 }

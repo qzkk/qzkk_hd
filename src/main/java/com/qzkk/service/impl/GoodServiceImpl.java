@@ -9,11 +9,13 @@ import com.qzkk.domain.Good;
 import com.qzkk.domain.GoodApplication;
 import com.qzkk.service.GoodService;
 import com.qzkk.utils.CastEntity;
+import com.qzkk.vo.GetGoodApplyInfo;
 import com.qzkk.vo.GoodAplyInfo;
 import com.qzkk.vo.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -116,6 +118,24 @@ public class GoodServiceImpl implements GoodService {
             res.put("msg", "submit successfully");
             return res;
         }
+    }
+
+
+//    查询待审核物资
+    @Override
+    public JSONObject getGoodApplicationList(int state){
+        JSONObject res =new JSONObject();
+        try{
+        List<Object[]> goodApplications = goodApplicationRepository.getGoodApplicationList();
+//        把查询出来的信息加入实体类 try方法如果查出来数据库类型和实体类型一致会成功 否则失败
+        List<GetGoodApplyInfo> goodsApplicationlists = CastEntity.castEntity(goodApplications, GetGoodApplyInfo.class);
+       res.put("data",goodsApplicationlists);
+       res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code", "500");
+        }
+       return res;
     }
 
     @Override
@@ -233,5 +253,50 @@ public class GoodServiceImpl implements GoodService {
         }
 
         return res;
+    }
+
+    @Override
+    public JSONObject delGood(String identifier){
+        JSONObject res = new JSONObject();
+        Good delGood =goodRepository.findByIdentifier(identifier);
+        if(delGood.getUsingNumber()!=0){
+            res.put("code","500");
+            res.put("msg","该物资正在使用无法删除");
+        }
+        else{
+        delGood.setDel(1);
+        goodRepository.save(delGood);
+            res.put("code","200");
+            res.put("msg","删除成功");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject examineGoodApplication(long gaId){
+        GoodApplication goodApplication =goodApplicationRepository.findByGaId(gaId);
+        goodApplication.setState(1);
+        Good good = goodRepository.findByGId(goodApplication.getGId());
+        good.setUsingNumber(good.getUsingNumber()+goodApplication.getNumber());
+        goodRepository.save(good);
+        goodApplicationRepository.save(goodApplication);
+
+        JSONObject res =new JSONObject();
+        res.put("code","200");
+        res.put("msg","审批通过");
+        return res;
+//        审核通过小队物资申请 更改物资申请表的状态和物资表中的使用数量
+    }
+
+    @Override
+    public JSONObject refuseGoodApplication(long gaId) {
+        GoodApplication goodApplication =goodApplicationRepository.findByGaId(gaId);
+        goodApplication.setState(-1);
+        goodApplicationRepository.save(goodApplication);
+        JSONObject res = new JSONObject();
+        res.put("code","201");
+        res.put("msg","审批不通过，请重新提交物资");
+        return res;
+//        审核拒绝小队物资申请
     }
 }

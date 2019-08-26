@@ -1,5 +1,6 @@
 package com.qzkk.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
@@ -9,6 +10,7 @@ import com.qzkk.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +71,21 @@ public class TeamController {
     @PostMapping("/getTeamInfo")
     public JSONObject getTeamInfo(@RequestParam long uid) {
         return teamService.viewTeamInfo(uid);
+    }
+
+    @PostMapping("/getTeamLists")
+    public JSONObject getTeamLists(@RequestParam int state){
+        return teamService.getTeamLists(state);
+    }
+
+    @PostMapping("/teamUserList")
+    public JSONObject teamUserList(BigInteger tId){
+        return teamService.teamUserList(tId);
+    }
+
+    @PostMapping("/exTeamApplication")
+    public JSONObject examineTeamApplication(@RequestParam long tId ,@RequestParam int state){
+        return teamService.examineTeamApplication(tId,state);
     }
 
 

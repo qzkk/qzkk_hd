@@ -39,4 +39,9 @@ public class GoodController {
         return goodService.viewGoods();
     }
 
+    @PostMapping("/delGood")
+    public JSONObject delGood(String identifier){
+        return goodService.delGood(identifier);
+    }
+
 }

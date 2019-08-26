@@ -1,15 +1,19 @@
 package com.qzkk.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.*;
 import com.qzkk.domain.*;
 import com.qzkk.service.TeamService;
 import com.qzkk.utils.CastEntity;
+import com.qzkk.vo.TeamList;
 import com.qzkk.vo.TeamMember;
+import com.qzkk.vo.TeamUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -209,6 +213,46 @@ public class TeamServiceImpl implements TeamService{
         return res;
     }
 
+    @Override
+    public JSONObject getTeamLists(int state){
+        JSONObject res =new JSONObject();
+        try{
+            List<Object[]> team =teamRepository.getTeamLists(state);
+            List<TeamList> teamList = CastEntity.castEntity(team,TeamList.class);
+            res.put("data",teamList);
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code","500");
+        }
+        return res;
+    }
 //测试上传
+
+    @Override
+    public JSONObject teamUserList(BigInteger tId){
+        JSONObject res =new JSONObject();
+        try {
+            List<Object[]> team = teamRepository.teamUserList(tId);
+            List<TeamUserInfo> teamList = CastEntity.castEntity(team, TeamUserInfo.class);
+            res.put("data",teamList);
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code","500");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject examineTeamApplication(Long tId ,int state){
+        JSONObject res = new JSONObject();
+        Team team = teamRepository.findByTId(tId);
+        team.setState(state);
+        teamRepository.save(team);
+        res.put("code","200");
+        res.put("msg","修改完成");
+        return res;
+    }
 
 }

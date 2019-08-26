@@ -2,12 +2,14 @@ package com.qzkk.dao;
 
 
 import com.qzkk.domain.GoodApplication;
+import com.qzkk.vo.GetGoodApplyInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -44,4 +46,17 @@ public interface GoodApplicationRepository extends JpaRepository<GoodApplication
      * @return
      */
     List<GoodApplication> findAllByUIdAndState(long uid, int i);
+
+
+    @Query(value = "select g.identifier,g.name as gname,te.name as tname,ga.number,ta.subject_name,ga.description,date_format(ga.application_time,'%Y-%m-%d %H:%i:%s'),ga.ga_id from good_application ga\n"+
+            "join good as g on ga.g_id=g.g_id \n" +
+            "join task as ta on ga.task_id=ta.id \n" +
+            "join team as te on ga.team_id=te.t_id \n" +
+            "where ga.state=0\n" ,nativeQuery = true)
+    List<Object[]> getGoodApplicationList();
+//    查询数据格式跟实体格式不一致时用select强制转换 ga.application_time
+    /**
+     * 查看所有待审核物资
+     * @return
+     */
 }
