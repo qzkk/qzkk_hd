@@ -7,7 +7,6 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.qzkk.domain.Task;
 import com.qzkk.service.TaskService;
-//import com.qzkk.utils.ExcelUtil;
 import com.qzkk.vo.ExcelOfTask;
 import com.qzkk.vo.SelectTaskCondition;
 import com.qzkk.vo.TeamVO;
@@ -106,155 +105,22 @@ public class TaskController {
     public JSONObject getTaskListToPage(SelectTaskCondition stc) {
         return taskService.getTaskListToPage(stc);
     }
-//    @PostMapping("/exportTask")
-//    public void exportTask(@RequestBody String taskList) {
-//        JsonObject jsonObject = (JsonObject) new JsonParser().parse(taskList);
-//        JsonArray jsonArray= jsonObject.getAsJsonArray("taskList");
-//        Gson gson=new Gson();
-//        List<TaskForPageVO> taskForPageVO=new ArrayList<>();
-//        for (JsonElement teamTaEle:jsonArray){
-//            TaskForPageVO task=gson.fromJson(teamTaEle,new TypeToken<TaskForPageVO>(){}.getType());
-//            taskForPageVO.add(task);
-//        }
-//        long t1=System.currentTimeMillis();
-//        String filePath = "/Users/yangshuai/Desktop/csexcel/task"+t1+".xlsx";
-//        ArrayList<ExcelOfTask> data = new ArrayList<>();
-//        for (int i=0;i<taskForPageVO.size();i++){
-//            ExcelOfTask excelOfTask = new ExcelOfTask();
-//            excelOfTask.setSn(taskForPageVO.get(i).getSn());
-//            excelOfTask.setDemand(taskForPageVO.get(i).getDemand());
-//            excelOfTask.setEd(taskForPageVO.get(i).getEd());
-//            excelOfTask.setName(taskForPageVO.get(i).getName());
-//            excelOfTask.setRs(taskForPageVO.get(i).getRs());
-//            excelOfTask.setSd(taskForPageVO.get(i).getSd());
-//            excelOfTask.setSt(taskForPageVO.get(i).getSt());
-//            switch(taskForPageVO.get(i).getState()){
-//                case 0:
-//                    excelOfTask.setState("待审核");
-//                    break;
-//                case 1:
-//                    excelOfTask.setState("审核通过");
-//                    break;
-//                case -1:
-//                    excelOfTask.setState("审核被拒绝");
-//                    break;
-//            }
-//            data.add(excelOfTask);
-//        }
-//        ExcelUtil.writeWithTemplate(filePath,data);
-//    }
-//    @PostMapping("/exportTask")
-//    public void exportTask(HttpServletResponse response,@RequestBody String taskList) {
-//        JsonObject jsonObject = (JsonObject) new JsonParser().parse(taskList);
-//        JsonArray jsonArray= jsonObject.getAsJsonArray("taskList");
-//        Gson gson=new Gson();
-//        List<TaskForPageVO> taskForPageVO=new ArrayList<>();
-//        for (JsonElement teamTaEle:jsonArray){
-//            TaskForPageVO task=gson.fromJson(teamTaEle,new TypeToken<TaskForPageVO>(){}.getType());
-//            taskForPageVO.add(task);
-//        }
-//        long t1=System.currentTimeMillis();
-//        String filePath = "task.xlsx";
-//        ArrayList<ExcelOfTask> excelList = new ArrayList<>();
-//        for (int i=0;i<taskForPageVO.size();i++){
-//            ExcelOfTask excelOfTask = new ExcelOfTask();
-//            excelOfTask.setSn(taskForPageVO.get(i).getSn());
-//            excelOfTask.setDemand(taskForPageVO.get(i).getDemand());
-//            excelOfTask.setEd(taskForPageVO.get(i).getEd());
-//            excelOfTask.setName(taskForPageVO.get(i).getName());
-//            excelOfTask.setRs(taskForPageVO.get(i).getRs());
-//            excelOfTask.setSd(taskForPageVO.get(i).getSd());
-//            excelOfTask.setSt(taskForPageVO.get(i).getSt());
-//            switch(taskForPageVO.get(i).getState()){
-//                case 0:
-//                    excelOfTask.setState("待审核");
-//                    break;
-//                case 1:
-//                    excelOfTask.setState("审核通过");
-//                    break;
-//                case -1:
-//                    excelOfTask.setState("审核被拒绝");
-//                    break;
-//            }
-//            excelList.add(excelOfTask);
-//        }
-//        //可以抽取为日期工具类
-//        Date date1 = new Date();
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//        String date = df.format(date1);
-//        TemplateExportParams params = new TemplateExportParams(filePath, true);
-//        Map<String, Object> data = new HashMap<String, Object>();
-//        data.put("date", date);//导出一般都要日期
-//        data.put("list", excelList);//导出list集合
-//        try {
-//            // 简单模板导出方法
-//            Workbook book = ExcelExportUtil.exportExcel(params, data);
-//            //下载方法
-//            export(response, book, "task");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    /**
-//     * export导出请求头设置
-//     *
-//     * @param response
-//     * @param workbook
-//     * @param fileName
-//     * @throws Exception
-//     */
-//    private static void export(HttpServletResponse response, Workbook workbook, String fileName) throws Exception {
-//        response.reset();
-//        response.setContentType("application/x-msdownload");
-//        fileName = fileName + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-//        response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("gb2312"), "ISO-8859-1") + ".xls");
-//        ServletOutputStream outStream = null;
-//        try {
-//            outStream = response.getOutputStream();
-//            workbook.write(outStream);
-//        } finally {
-//            outStream.close();
-//        }
-//    }
+
     @GetMapping("/exportTask")
     public String exportExcelTest(HttpServletResponse response, HttpServletRequest request){
-//        JsonObject jsonObject = (JsonObject) new JsonParser().parse(taskList);
-//        JsonArray jsonArray= jsonObject.getAsJsonArray("taskList");
-//        Gson gson=new Gson();
-//        List<TaskForPageVO> taskForPageVO=new ArrayList<>();
-//        for (JsonElement teamTaEle:jsonArray){
-//            TaskForPageVO task=gson.fromJson(teamTaEle,new TypeToken<TaskForPageVO>(){}.getType());
-//            taskForPageVO.add(task);
-//        }
-        Map<String, String[]> a=request.getParameterMap();
-        ArrayList<ExcelOfTask> data = new ArrayList<>();
-//        for (int i=0;i<taskForPageVO.size();i++){
-//            ExcelOfTask excelOfTask = new ExcelOfTask();
-//            excelOfTask.setSn(taskForPageVO.get(i).getSn());
-//            excelOfTask.setDemand(taskForPageVO.get(i).getDemand());
-//            excelOfTask.setEd(taskForPageVO.get(i).getEd());
-//            excelOfTask.setName(taskForPageVO.get(i).getName());
-//            excelOfTask.setRs(taskForPageVO.get(i).getRs());
-//            excelOfTask.setSd(taskForPageVO.get(i).getSd());
-//            excelOfTask.setSt(taskForPageVO.get(i).getSt());
-//            switch(taskForPageVO.get(i).getState()){
-//                case 0:
-//                    excelOfTask.setState("待审核");
-//                    break;
-//                case 1:
-//                    excelOfTask.setState("审核通过");
-//                    break;
-//                case -1:
-//                    excelOfTask.setState("审核被拒绝");
-//                    break;
-//            }
-//            data.add(excelOfTask);
-//        }
-        ExcelOfTask excelOfTask=new ExcelOfTask();
-        excelOfTask.setState("a");
-        excelOfTask.setSt("a");
-        excelOfTask.setSd("a");
-        data.add(excelOfTask);
+        String taskList=request.getParameter("taskList");
+        Gson gson=new Gson();
+        List<ExcelOfTask> data=gson.fromJson(taskList,new TypeToken<List<ExcelOfTask>>(){}.getType());
+        for(int i=0;i<data.size();i++){
+            if (data.get(i).getState().equals("0")){
+                data.get(i).setState("待审核");
+            }else if (data.get(i).getState().equals("1")){
+                data.get(i).setState("审核通过");
+            }else if (data.get(i).getState().equals("-1")){
+                data.get(i).setState("审核被拒绝");
+            }
+
+        }
         // 获取workbook对象
         Workbook workbook = exportSheetByTemplate(data) ;
         // 判断数据
@@ -262,12 +128,12 @@ public class TaskController {
             return "fail";
         }
         // 设置excel的文件名称
-        String excelName = "测试excel" ;
+        String excelName = "task" ;
         // 重置响应对象
         response.reset();
         // 当前日期，用于导出文件名称
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String dateStr = "["+excelName+"-"+sdf.format(new Date())+"]";
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String dateStr = "["+excelName+System.currentTimeMillis()+"]";
         // 指定下载的文件名--设置响应头
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" +dateStr+".xls");
@@ -299,13 +165,13 @@ public class TaskController {
 
         // 设置导出配置
         // 获取导出excel指定模版
-        TemplateExportParams params = new TemplateExportParams("/Users/yangshuai/Desktop/csexcel/task.xlsx");
+        TemplateExportParams params = new TemplateExportParams("src/main/java/com/qzkk/controller/task.xlsx");
         // 标题开始行
         // params.setHeadingStartRow(0);
         // 标题行数
         // params.setHeadingRows(2);
         // 设置sheetName，若不设置该参数，则使用得原本得sheet名称
-        params.setSheetName("班级信息");
+        params.setSheetName("科考任务信息");
         Map<String,Object> map = new HashMap<String,Object>() ;
         map.put("list",list) ;
         // 导出excel
