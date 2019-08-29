@@ -8,8 +8,10 @@ import com.qzkk.domain.*;
 import com.qzkk.service.TeamService;
 import com.qzkk.utils.CastEntity;
 //import com.qzkk.vo.TeamList;
+import com.qzkk.vo.TeamList;
 import com.qzkk.vo.TeamMember;
 //import com.qzkk.vo.TeamUserInfo;
+import com.qzkk.vo.TeamUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -216,15 +218,15 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public JSONObject getTeamLists(int state){
         JSONObject res =new JSONObject();
-//        try{
-//            List<Object[]> team =teamRepository.getTeamLists(state);
-//            List<TeamList> teamList = CastEntity.castEntity(team,TeamList.class);
-//            res.put("data",teamList);
-//            res.put("code","200");
-//        }catch (Exception e){
-//            res.put("msg","查询失败");
-//            res.put("code","500");
-//        }
+        try{
+            List<Object[]> team =teamRepository.getTeamLists(state);
+            List<TeamList> teamList = CastEntity.castEntity(team,TeamList.class);
+            res.put("data",teamList);
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code","500");
+        }
         return res;
     }
 //测试上传
@@ -232,15 +234,15 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public JSONObject teamUserList(BigInteger tId){
         JSONObject res =new JSONObject();
-//        try {
-//            List<Object[]> team = teamRepository.teamUserList(tId);
-//            List<TeamUserInfo> teamList = CastEntity.castEntity(team, TeamUserInfo.class);
-//            res.put("data",teamList);
-//            res.put("code","200");
-//        }catch (Exception e){
-//            res.put("msg","查询失败");
-//            res.put("code","500");
-//        }
+        try {
+            List<Object[]> team = teamRepository.teamUserList(tId);
+            List<TeamUserInfo> teamList = CastEntity.castEntity(team, TeamUserInfo.class);
+            res.put("data",teamList);
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","查询失败");
+            res.put("code","500");
+        }
         return res;
     }
 

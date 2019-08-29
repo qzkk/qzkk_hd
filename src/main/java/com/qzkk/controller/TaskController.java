@@ -1,7 +1,7 @@
 package com.qzkk.controller;
 
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
+//import cn.afterturn.easypoi.excel.ExcelExportUtil;
+//import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
@@ -10,7 +10,7 @@ import com.qzkk.service.TaskService;
 import com.qzkk.vo.ExcelOfTask;
 import com.qzkk.vo.SelectTaskCondition;
 import com.qzkk.vo.TeamVO;
-import org.apache.poi.ss.usermodel.Workbook;
+//import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,76 +106,76 @@ public class TaskController {
         return taskService.getTaskListToPage(stc);
     }
 
-    @GetMapping("/exportTask")
-    public String exportExcelTest(HttpServletResponse response, HttpServletRequest request){
-        String taskList=request.getParameter("taskList");
-        Gson gson=new Gson();
-        List<ExcelOfTask> data=gson.fromJson(taskList,new TypeToken<List<ExcelOfTask>>(){}.getType());
-        for(int i=0;i<data.size();i++){
-            if (data.get(i).getState().equals("0")){
-                data.get(i).setState("待审核");
-            }else if (data.get(i).getState().equals("1")){
-                data.get(i).setState("审核通过");
-            }else if (data.get(i).getState().equals("-1")){
-                data.get(i).setState("审核被拒绝");
-            }
+//    @GetMapping("/exportTask")
+//    public String exportExcelTest(HttpServletResponse response, HttpServletRequest request){
+//        String taskList=request.getParameter("taskList");
+//        Gson gson=new Gson();
+//        List<ExcelOfTask> data=gson.fromJson(taskList,new TypeToken<List<ExcelOfTask>>(){}.getType());
+//        for(int i=0;i<data.size();i++){
+//            if (data.get(i).getState().equals("0")){
+//                data.get(i).setState("待审核");
+//            }else if (data.get(i).getState().equals("1")){
+//                data.get(i).setState("审核通过");
+//            }else if (data.get(i).getState().equals("-1")){
+//                data.get(i).setState("审核被拒绝");
+//            }
+//
+//        }
+//        // 获取workbook对象
+//        Workbook workbook = exportSheetByTemplate(data) ;
+//        // 判断数据
+//        if(workbook == null) {
+//            return "fail";
+//        }
+//        // 设置excel的文件名称
+//        String excelName = "task" ;
+//        // 重置响应对象
+//        response.reset();
+//        // 当前日期，用于导出文件名称
+//        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//        String dateStr = "["+excelName+System.currentTimeMillis()+"]";
+//        // 指定下载的文件名--设置响应头
+//        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+//        response.setHeader("Content-Disposition", "attachment;filename=" +dateStr+".xls");
+//        response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+//        response.setHeader("Pragma", "no-cache");
+//        response.setHeader("Cache-Control", "no-cache");
+//        response.setDateHeader("Expires", 0);
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+//        response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//        //response.setHeader("X-Powered-By",' 3.2.1');
+//        response.setHeader("Content-Type", "application/json;charset=utf-8");
+//
+//        // 写出数据输出流到页面
+//        try {
+//            OutputStream output = response.getOutputStream();
+//            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+//            workbook.write(bufferedOutPut);
+//            bufferedOutPut.flush();
+//            bufferedOutPut.close();
+//            output.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "success";
+//    }
 
-        }
-        // 获取workbook对象
-        Workbook workbook = exportSheetByTemplate(data) ;
-        // 判断数据
-        if(workbook == null) {
-            return "fail";
-        }
-        // 设置excel的文件名称
-        String excelName = "task" ;
-        // 重置响应对象
-        response.reset();
-        // 当前日期，用于导出文件名称
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String dateStr = "["+excelName+System.currentTimeMillis()+"]";
-        // 指定下载的文件名--设置响应头
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" +dateStr+".xls");
-        response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
-        response.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-        //response.setHeader("X-Powered-By",' 3.2.1');
-        response.setHeader("Content-Type", "application/json;charset=utf-8");
-
-        // 写出数据输出流到页面
-        try {
-            OutputStream output = response.getOutputStream();
-            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
-            workbook.write(bufferedOutPut);
-            bufferedOutPut.flush();
-            bufferedOutPut.close();
-            output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "success";
-    }
-
-    public Workbook exportSheetByTemplate(List<ExcelOfTask> list){
-
-        // 设置导出配置
-        // 获取导出excel指定模版
-        TemplateExportParams params = new TemplateExportParams("src/main/java/com/qzkk/controller/task.xlsx");
-        // 标题开始行
-        // params.setHeadingStartRow(0);
-        // 标题行数
-        // params.setHeadingRows(2);
-        // 设置sheetName，若不设置该参数，则使用得原本得sheet名称
-        params.setSheetName("科考任务信息");
-        Map<String,Object> map = new HashMap<String,Object>() ;
-        map.put("list",list) ;
-        // 导出excel
-        return ExcelExportUtil.exportExcel(params, map);
-    }
+//    public Workbook exportSheetByTemplate(List<ExcelOfTask> list){
+//
+//        // 设置导出配置
+//        // 获取导出excel指定模版
+//        TemplateExportParams params = new TemplateExportParams("src/main/java/com/qzkk/controller/task.xlsx");
+//        // 标题开始行
+//        // params.setHeadingStartRow(0);
+//        // 标题行数
+//        // params.setHeadingRows(2);
+//        // 设置sheetName，若不设置该参数，则使用得原本得sheet名称
+//        params.setSheetName("科考任务信息");
+//        Map<String,Object> map = new HashMap<String,Object>() ;
+//        map.put("list",list) ;
+//        // 导出excel
+//        return ExcelExportUtil.exportExcel(params, map);
+//    }
 
 }
