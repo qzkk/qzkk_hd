@@ -303,4 +303,19 @@ public class TaskServiceImpl implements TaskService{
         }
         return resData;
     }
+
+    @Override
+    public JSONObject getTaskListOfAccessByUid(long uid) {
+        JSONObject res =new JSONObject();
+        try{
+            List<Object[]> list = taskRepository.getTaskListOfAccessByUid(uid);
+            List<TaskVO> userList = CastEntity.castEntity(list, TaskVO.class);
+            res.put("code", "200");
+            res.put("list", userList);
+        }catch (Exception e){
+            res.put("code", "500");
+            res.put("msg", "操作失败");
+        }
+        return res;
+    }
 }

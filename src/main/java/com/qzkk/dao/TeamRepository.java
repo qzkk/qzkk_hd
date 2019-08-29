@@ -56,4 +56,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             "left outer join user u on tu.user_id = u.u_id\n"+
             "where tu.team_id =:tId",nativeQuery = true)
     List<Object[]> teamUserList(@Param("tId") BigInteger tId);
+
+    @Query(value ="select t.t_id as tid,t.name from team t where t.u_id=:uid and t.state=1",nativeQuery = true)
+    List<Object[]> teamListOfAccessByUid(@Param("uid") long uid);
+
+
 }

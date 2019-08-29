@@ -106,6 +106,12 @@ public class TaskController {
         return taskService.getTaskListToPage(stc);
     }
 
+    @PostMapping("/getTaskListOfAccessByUid")
+    public JSONObject getTaskListOfAccessByUid(@RequestParam long uid) {
+        return taskService.getTaskListOfAccessByUid(uid);
+    }
+
+
     @GetMapping("/exportTask")
     public String exportExcelTest(HttpServletResponse response, HttpServletRequest request){
         String taskList=request.getParameter("taskList");
@@ -133,7 +139,7 @@ public class TaskController {
         response.reset();
         // 当前日期，用于导出文件名称
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String dateStr = "["+excelName+System.currentTimeMillis()+"]";
+        String dateStr = excelName+System.currentTimeMillis();
         // 指定下载的文件名--设置响应头
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" +dateStr+".xls");

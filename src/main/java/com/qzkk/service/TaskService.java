@@ -22,4 +22,5 @@ public interface TaskService {
     JSONObject operateTask(long taid,int state);
     JSONObject viewMemeberByTid(long tid);
     JSONObject getTaskListToPage(SelectTaskCondition stc);
+    JSONObject getTaskListOfAccessByUid(long uid);
 }

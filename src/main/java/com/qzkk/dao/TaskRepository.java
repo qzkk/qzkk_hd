@@ -42,5 +42,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "select u.name,u.type,u.sex,u.id_card as idCard,u.work_position as wp,u.work_unit as wu from user u join team_user tu on u.u_id=tu.user_id where tu.team_id=:tid order by type asc",nativeQuery = true)
     List<Object[]> viewMemeberByTid(@Param("tid") long tid);
 
+    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id and ta.state=1 where u.u_id=:uid",nativeQuery = true)
+    List<Object[]> getTaskListOfAccessByUid(@Param("uid") long uid);
+
+
 
 }

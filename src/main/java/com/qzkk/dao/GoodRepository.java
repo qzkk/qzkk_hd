@@ -26,7 +26,7 @@ public interface GoodRepository extends JpaRepository<Good, Long> {
 
     //返回还有剩余的物资信息
     //@Query(value = "select new map(u.userName, ui.name, ui.gender, ui.description) from UserInfo ui, User u where u.id = ui.userId")
-    @Query(value = "select g from Good g where g.number-g.usingNumber-g.applyingNumber>0")
+    @Query(value = "select g from Good g where g.number-g.usingNumber>0")
     List<Good> getLeftGoodTypes();
 
 

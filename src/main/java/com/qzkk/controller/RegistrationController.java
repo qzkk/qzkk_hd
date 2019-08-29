@@ -1,15 +1,22 @@
 package com.qzkk.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.qzkk.dao.UserRepository;
+import com.qzkk.domain.Task;
 import com.qzkk.domain.User;
 import com.qzkk.service.RegistrationService;
+import com.qzkk.utils.MD5Util;
+import com.qzkk.vo.TeamVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,6 +38,12 @@ public class RegistrationController {
                 res.put("msg", "account has exist!");
                 return res;
             }
+            String password = registration.getPsd();
+            MD5Util md5Util = new MD5Util();
+            password = md5Util.encode(password);
+            registration.setPsd(password);
+            registration.setState(0);
+            registration.setExamine(0);
             registrationService.save(registration);
             res.put("code","200");
             res.put("msg","已成功提交");
@@ -81,6 +94,25 @@ public class RegistrationController {
         }
         return res;
     }
+    @PostMapping("/findByConditions1")
+    public JSONObject findByConditions1(@RequestParam long tid,@RequestParam int pageOffset,@RequestParam String name){
+        JSONObject res=new JSONObject();
+
+        try {
+
+            Page<User> resData=registrationService
+                    .selectToPageByDynamic1(tid,pageOffset,name);
+            res.put("code","200");
+            //数据本体内容
+            res.put("list",resData.getContent());
+            //总共多少条数据，用于前端分页使用
+            res.put("totalNum",resData.getTotalElements());
+        }catch (Exception e){
+            res.put("code","500");
+            res.put("msg","查询失败，请重新尝试！");
+        }
+        return res;
+    }
 
     /**
      * 如果查询框中的内容为空，则查询全部数据并进行分页
@@ -93,6 +125,24 @@ public class RegistrationController {
         try {
             Page<User> pageObject=registrationService
                     .selectToPageByStatic(registration);
+            res.put("code","200");
+            //数据本体内容
+            res.put("list",pageObject.getContent());
+            //总共多少条数据，用于前端分页使用
+            res.put("totalNum",pageObject.getTotalElements());
+        }catch (Exception e){
+            res.put("code","500");
+            res.put("msg","查询失败，请重新尝试！");
+        }
+        return res;
+    }
+
+    @PostMapping("/findAllToPage1")
+    public JSONObject findAllToPage1(@RequestParam long tid,@RequestParam int pageOffset){
+        JSONObject res=new JSONObject();
+        try {
+            Page<User> pageObject=registrationService
+                    .selectToPageByStatic1(tid,pageOffset);
             res.put("code","200");
             //数据本体内容
             res.put("list",pageObject.getContent());

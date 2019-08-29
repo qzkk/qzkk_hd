@@ -8,6 +8,7 @@ import com.qzkk.domain.*;
 import com.qzkk.service.TeamService;
 import com.qzkk.utils.CastEntity;
 //import com.qzkk.vo.TeamList;
+import com.qzkk.vo.TeamInfoVO;
 import com.qzkk.vo.TeamMember;
 //import com.qzkk.vo.TeamUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,22 @@ public class TeamServiceImpl implements TeamService{
             res.put("code", "500");
         }
 
+        return res;
+    }
+
+    @Override
+    public JSONObject teamListOfAccessByUid(long uid) {
+        JSONObject res=new JSONObject();
+        try {
+            List<Object[]> list=teamRepository.teamListOfAccessByUid(uid);
+            List<TeamInfoVO> teamMembers = CastEntity.castEntity(list, TeamInfoVO.class);
+            res.put("code", "200");
+            res.put("list", teamMembers);
+            res.put("msg", "查询成功");
+        } catch (Exception e) {
+            res.put("code", "500");
+            res.put("msg", "查询失败");
+        }
         return res;
     }
 

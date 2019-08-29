@@ -30,6 +30,8 @@ public interface RegistrationService {
      * @return
      */
     Page<User> selectToPageByStatic(User registration);
+    Page<User> selectToPageByStatic1(long tid,int pageOffset);
+    Page<User> selectToPageByDynamic1(long tid,int pageOffset,String name);
 
     /**
      * 如果有约束条件，并且进行分页

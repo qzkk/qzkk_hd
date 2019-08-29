@@ -39,6 +39,20 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    public Page<User> selectToPageByStatic1(long tid, int pageOffset) {
+        Pageable pageable = PageRequest.of(pageOffset,10, Sort.Direction.ASC, "u_id");
+        Page<User> registrations=registrationRepository.findToPage1(tid,pageable);
+        return registrations;
+    }
+
+    @Override
+    public Page<User> selectToPageByDynamic1(long tid, int pageOffset, String name) {
+        Pageable pageable = PageRequest.of(pageOffset,10, Sort.Direction.ASC, "u_id");
+        Page<User> registrations=registrationRepository.selectToPageByDynamic1(tid,name,pageable);
+        return registrations;
+    }
+
+    @Override
     public Page<User> findAllToPage(Integer Offset,Integer size) {
 
         Page<User> registrations = registrationRepository.findAll(new PageRequest(Offset, size));
