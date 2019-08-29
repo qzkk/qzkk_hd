@@ -28,6 +28,8 @@ public interface TeamService {
     JSONObject viewTeams(long uid);
     JSONObject teamListOfAccessByUid(long uid);
 
+    JSONObject teamListOfAccessByUid(long uid);
+
     //删除小队
     JSONObject delTeam(long tid);
 

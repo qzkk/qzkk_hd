@@ -38,6 +38,10 @@ public class TaskController {
     public JSONObject getTaskListByUid(@RequestParam long uid) {
         return taskService.getTaskListByUid(uid);
     }
+    @PostMapping("/getTaskListOfAccessByUid")
+    public JSONObject getTaskListOfAccessByUid(@RequestParam long uid) {
+        return taskService.getTaskListOfAccessByUid(uid);
+    }
     @PostMapping("/getTaskListByExamine")
     public JSONObject getTaskListByExamine() {
         return taskService.getTaskListByExamine();

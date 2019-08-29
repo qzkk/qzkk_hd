@@ -11,6 +11,7 @@ public interface TaskService {
     JSONObject getTaskList(long teamId);
     JSONObject getTaskList1();
     JSONObject getTaskListByUid(long uid);
+    JSONObject getTaskListOfAccessByUid(long uid);
     JSONObject getTaskListByExamine();
     JSONObject getPassedTaskListByUid(long uid);
     JSONObject selectTeamNotDis(long taskid,long uid);
