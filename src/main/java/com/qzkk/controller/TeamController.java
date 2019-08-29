@@ -34,6 +34,11 @@ public class TeamController {
         return teamService.viewTeams(uid);
     }
 
+    @PostMapping("/teamListOfAccessByUid")
+    public JSONObject teamListOfAccessByUid(@RequestParam long uid) {
+        return teamService.teamListOfAccessByUid(uid);
+    }
+
     @PostMapping("/addUserToTeam")
     public JSONObject addUserToTeam(@RequestBody String userList) {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(userList);

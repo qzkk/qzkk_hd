@@ -27,6 +27,8 @@ public interface TeamService {
     //查看小队
     JSONObject viewTeams(long uid);
 
+    JSONObject teamListOfAccessByUid(long uid);
+
     //删除小队
     JSONObject delTeam(long tid);
 
