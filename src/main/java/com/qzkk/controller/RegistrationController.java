@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qzkk.dao.UserRepository;
 import com.qzkk.domain.User;
 import com.qzkk.service.RegistrationService;
+import com.qzkk.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,12 @@ public class RegistrationController {
                 res.put("msg", "account has exist!");
                 return res;
             }
+            String password = registration.getPsd();
+            MD5Util md5Util = new MD5Util();
+            password = md5Util.encode(password);
+            registration.setPsd(password);
+            registration.setState(0);
+            registration.setExamine(0);
             registrationService.save(registration);
             res.put("code","200");
             res.put("msg","已成功提交");
