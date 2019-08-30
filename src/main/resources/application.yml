@@ -1,4 +1,15 @@
+server:
+  servlet:
+    context-path: /api
+
 spring:
+  profiles:
+    active: local 
+
+---
+
+spring:
+  profiles: release
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://219.244.186.2:3306/qzkk?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
@@ -9,6 +20,20 @@ spring:
       ddl-auto: update
     show-sql: true
 
+---
+
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/qzkk?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 server:
-  servlet:
-    context-path: /api
+  port: 8088
+
