@@ -10,5 +10,7 @@ spring:
     show-sql: true
 
 server:
+#  默认也是8080
+  port: 8080
   servlet:
     context-path: /api

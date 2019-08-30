@@ -26,7 +26,7 @@ public interface TeamService {
 
     //查看小队
     JSONObject viewTeams(long uid);
-    JSONObject teamListOfAccessByUid(long uid);
+//    JSONObject teamListOfAccessByUid(long uid);
 
     JSONObject teamListOfAccessByUid(long uid);
 

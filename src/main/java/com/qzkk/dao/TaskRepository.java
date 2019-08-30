@@ -18,8 +18,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where u.u_id=:uid",nativeQuery = true)
     List<Object[]> getTaskListByUid(@Param("uid") long uid);
 
-    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where ta.state=1 and u.u_id=:uid",nativeQuery = true)
-    List<Object[]> getTaskListOfAccessByUid(@Param("uid") long uid);
+
 
     @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where ta.state=0",nativeQuery = true)
     List<Object[]> getTaskListByExamine();
@@ -48,6 +47,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id and ta.state=1 where u.u_id=:uid",nativeQuery = true)
     List<Object[]> getTaskListOfAccessByUid(@Param("uid") long uid);
 
-
+//    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where ta.state=1 and u.u_id=:uid",nativeQuery = true)
+//    List<Object[]> getTaskListOfAccessByUid(@Param("uid") long uid);
 
 }
