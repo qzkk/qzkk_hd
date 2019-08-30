@@ -67,4 +67,56 @@ public class User {
 
     //离青时间
     private String backDate;
+
+	public void setDel(int i) {
+        this.del = i;
+	}
+
+	public int getPageOffset() {
+		return this.pageOffset;
+	}
+
+	public int getPageSize() {
+		return this.pageSize;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getWorkUnit() {
+		return this.workUnit;
+	}
+
+	public long getTId() {
+		return this.tId;
+	}
+
+	public long getUId() {
+		return this.uId;
+	}
+
+	public String getAccount() {
+		return this.account;
+	}
+
+	public String getPsd() {
+		return this.psd;
+	}
+
+	public void setPsd(String password) {
+        this.psd = password;
+	}
+
+	public void setState(int i) {
+        this.state = i;
+	}
+
+	public void setExamine(int i) {
+        this.examine = i;
+	}
+
+	public int getExamine() {
+		return this.examine;
+	}
 }

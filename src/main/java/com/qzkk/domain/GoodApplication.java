@@ -54,4 +54,20 @@ public class GoodApplication {
     //审核的状态：0待审核，1审核通过，-1审核不通过
     private int state = 0;
 
+	public long getGId() {
+		return this.gId;
+	}
+
+	public int getNumber() {
+		return this.number;
+	}
+
+	public void setState(int i) {
+        this.state = i;
+	}
+
+	public void setStartDate(Date date) {
+        this.startDate = date;
+	}
+
 }

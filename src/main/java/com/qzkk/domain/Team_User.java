@@ -22,4 +22,12 @@ public class Team_User {
 
     //小队id
     private long teamId;
+
+	public void setTeamId(long tId) {
+        this.teamId = tId; 
+	}
+
+	public void setUserId(long uId) {
+        this.userId = uId;
+	}
 }
