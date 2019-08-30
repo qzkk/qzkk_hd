@@ -23,5 +23,13 @@ public class Team_Task {
     //小队id
     private long teamId;
 
+	public void setTaskId(long taid) {
+        this.taskId = taid;
+	}
+
+	public void setTeamId(long teid) {
+        this.teamId = teid;
+	}
+
 
 }

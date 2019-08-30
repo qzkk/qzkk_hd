@@ -78,6 +78,12 @@ public class UserServiceImpl implements UserService {
         }
 
         res = (JSONObject) JSONObject.toJSON(user);
+        // try {
+        //     user.setPageOffset(0);
+        //     user.setPageSize(0);
+        // } catch (Exception e) {
+        //     res = (JSONObject) JSONArray.toJSON(user);
+        // }
         res.put("code", "200");
         return res;
     }

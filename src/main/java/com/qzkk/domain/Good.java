@@ -50,4 +50,40 @@ public class Good {
     //是否被删除
     private int del;
 
+	public String getIdentifier() {
+		return this.identifier;
+	}
+
+	public int getNumber() {
+		return this.number;
+	}
+
+	public void setNumber(int i) {
+        this.number = i;
+	}
+
+	public void setDel(int i) {
+        this.del = i;
+	}
+
+	public void setApplyingNumber(int i) {
+        this.applyingNumber = i;
+	}
+
+	public void setImages(String string) {
+        this.images = string;
+	}
+
+	public int getUsingNumber() {
+		return this.usingNumber;
+	}
+
+	public int getApplyingNumber() {
+		return applyingNumber;
+	}
+
+	public void setUsingNumber(int i) {
+        this.usingNumber = i;
+	}
+
 }

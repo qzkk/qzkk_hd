@@ -39,4 +39,24 @@ public class Team {
     //申请状态：0未审核，1审核通过，-1未通过
     private int state = 0;
 
+	public void setState(int i) {
+        this.state = i;
+	}
+
+	public void setCreateTime(Date date) {
+        this.createTime = date;
+	}
+
+	public void setDel(int i) {
+        this.del = i;
+	}
+
+	public void setDelTime(Date date) {
+        this.delTime = date;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
 }
