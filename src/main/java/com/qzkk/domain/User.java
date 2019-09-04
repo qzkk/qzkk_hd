@@ -44,7 +44,7 @@ public class User {
     //身份证号
     private String idCard;
 
-    //类型：0队员 1队长 2管理员
+    //类型：0队员 1负责人 2系统管理员 3科考基地 4成果转化中心
     private int type;
 
     //科考状态（暂时功能用不上，先留着吧）
