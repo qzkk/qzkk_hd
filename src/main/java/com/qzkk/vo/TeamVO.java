@@ -13,4 +13,7 @@ public class TeamVO {
     private String name;
     private String uname;
     private Integer state;
+	public  BigInteger getTid() {
+		return this.tid;
+	}
 }
