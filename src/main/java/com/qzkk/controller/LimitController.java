@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LimitController {
     @Autowired
     private LimitService limitService;
+
+    /**
+     * 给人员设置级别/权限
+     * @param uid
+     * @param type
+     * @return
+     */
     @PostMapping("/limitSZ")
     public JSONObject limitSZ(@RequestParam long uid,@RequestParam int type) {
         return limitService.limitSZ(uid,type);

@@ -18,6 +18,11 @@ public class CreatTeamController {
     @Autowired
     private TeamService teamService;
 
+    /**
+     * 申请（创建）小队
+     * @param team
+     * @return
+     */
     @PostMapping("/creatTeam")
     public JSONObject creatTeam(Team team){
         return teamService.creatTeam(team);

@@ -26,14 +26,27 @@ import java.util.*;
 public class TaskController {
     @Autowired
     private TaskService taskService;
+
+    /**
+     * 获得该团队的科考任务
+     * @param tid
+     * @return
+     */
     @PostMapping("/getTaskList")
     public JSONObject getTaskList(@RequestParam long tid) {
         return taskService.getTaskList(tid);
     }
+
     @PostMapping("/getTaskList1")
     public JSONObject getTaskList1() {
         return taskService.getTaskList1();
     }
+
+    /**
+     * 获取该队长的任务列表
+     * @param uid
+     * @return
+     */
     @PostMapping("/getTaskListByUid")
     public JSONObject getTaskListByUid(@RequestParam long uid) {
         return taskService.getTaskListByUid(uid);
@@ -51,19 +64,42 @@ public class TaskController {
     public JSONObject selectTeamNotDis(@RequestParam long taid,@RequestParam long uid) {
         return taskService.selectTeamNotDis(taid,uid);
     }
+
+    /**
+     * 申请任务时选择负责小队的列表
+     * @param uid
+     * @return
+     */
     @PostMapping("/selectChargedTeam")
     public JSONObject selectChargedTeam(@RequestParam long uid) {
         return taskService.selectChargedTeam(uid);
     }
 
+    /**
+     * 删除该任务
+     * @param id
+     * @return
+     */
     @PostMapping("/deleteTask")
     public JSONObject deleteTask(@RequestParam long id) {
         return taskService.deleteTask(id);
     }
+
+    /**
+     * 根据任务id查看负责此任务的的团队
+     * @param taid  任务id
+     * @return
+     */
     @PostMapping("/viewTeamsByTaskId")
     public JSONObject viewTeamsByTaskId(@RequestParam long taid) {
         return taskService.viewTeamsByTaskId(taid);
     }
+
+    /**
+     * 任务申请
+     * @param aplyTask
+     * @return
+     */
     @PostMapping("/aplyTask")
     public JSONObject aplyTask(@RequestBody String aplyTask) {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(aplyTask);
@@ -94,14 +130,33 @@ public class TaskController {
 
         return taskService.distributeTa(teamVOS,taid);
     }
+
+    /**
+     * 审批任务同意或者拒绝
+     * @param taid  任务id
+     * @param state 任务的审核状态：0待审核，1审核通过，-1审核不通过
+     * @return
+     */
     @PostMapping("/operateTask")
     public JSONObject operateTask(@RequestParam long taid,@RequestParam int state) {
         return taskService.operateTask(taid,state);
     }
+
+    /**
+     * 根据团队id查看团队成员
+     * @param tid  团队id
+     * @return
+     */
     @PostMapping("/viewMemeberByTid")
     public JSONObject viewMemeberByTid(@RequestParam long tid) {
         return taskService.viewMemeberByTid(tid);
     }
+
+    /**
+     * 查看任务并且分页
+     * @param stc 查看的条件，暂时包括：任务名称、任务申请人、任务审核状态
+     * @return
+     */
     @PostMapping("/getTaskListToPage")
     public JSONObject getTaskListToPage(SelectTaskCondition stc) {
         return taskService.getTaskListToPage(stc);
@@ -117,12 +172,23 @@ public class TaskController {
 //    public JSONObject getTaskListOfAccessByUid(@RequestParam long uid) {
 //        return taskService.getTaskListOfAccessByUid(uid);
 //    }
+
+    /**
+     * 获得该队长审核已通过的任务
+     * @param uid
+     * @return
+     */
     @PostMapping("/getTaskListOfAccessByUid")
     public JSONObject getTaskListOfAccessByUid(@RequestParam long uid) {
         return taskService.getTaskListOfAccessByUid(uid);
     }
 
-
+    /**
+     * 导出科考任务excel
+     * @param response
+     * @param request
+     * @return
+     */
     @GetMapping("/exportTask")
     public String exportExcelTest(HttpServletResponse response, HttpServletRequest request){
         String taskList=request.getParameter("taskList");
@@ -178,6 +244,11 @@ public class TaskController {
         return "success";
     }
 
+    /**
+     * 往excel写入数据
+     * @param list
+     * @return
+     */
     public Workbook exportSheetByTemplate(List<ExcelOfTask> list){
 
         // 设置导出配置
