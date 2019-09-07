@@ -285,7 +285,7 @@ public class TaskServiceImpl implements TaskService{
         try {
             Pageable pageable = PageRequest.of(stc.getPageOffset(),stc.getPageSize(),
                     Sort.Direction.DESC, "id");
-            StringBuffer dataSql = new StringBuffer("select ta.id,ta.demand,ta.research_site rs,ta.subject_name sn,ta.subject_task st,ta.start_date sd,ta.end_date ed,u.name,u.type,ta.state from task ta join user u on u.u_id=ta.uid where 1=1");
+            StringBuffer dataSql = new StringBuffer("select ta.route,ta.id,ta.demand,ta.research_site rs,ta.subject_name sn,ta.subject_task st,ta.start_date sd,ta.end_date ed,u.name,u.type,ta.state from task ta join user u on u.u_id=ta.uid where 1=1");
             StringBuffer countSql = new StringBuffer("select count(1) from task ta join user u on u.u_id=ta.uid where 1=1");
             if (!(stc.getUname().equals(""))){
                 dataSql.append(" and u.name like CONCAT('%',:uname,'%')");

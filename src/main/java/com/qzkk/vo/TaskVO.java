@@ -20,4 +20,5 @@ public class TaskVO {
     private String name;
     private Integer type;
     private Integer state;
+    private String route;
 }

@@ -20,10 +20,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
 
 
-    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where ta.state=0",nativeQuery = true)
+    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,ta.start_date as sd,ta.end_date as ed,u.name,u.type,ta.state,ta.route from task ta join user u on ta.uid=u.u_id where ta.state=0",nativeQuery = true)
     List<Object[]> getTaskListByExamine();
 
-    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,u.name,u.type,ta.state from task ta join user u on ta.uid=u.u_id where ta.state=1 and u.u_id=:uid",nativeQuery = true)
+    @Query(value = "select ta.id,ta.demand,ta.research_site as rs,ta.subject_name as sn,ta.subject_task as st,u.name,u.type,ta.state,ta.route from task ta join user u on ta.uid=u.u_id where ta.state=1 and u.u_id=:uid",nativeQuery = true)
     List<Object[]> getPassedTaskListByUid(@Param("uid") long uid);
 
     @Query(value = "select te.t_id as tid,te.u_id as uid,te.name as tname,u.name as uname from team_task tt \n" +
