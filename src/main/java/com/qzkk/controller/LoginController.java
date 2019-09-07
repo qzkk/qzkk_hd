@@ -27,6 +27,12 @@ public class LoginController {
         return userService.register(user);
     }
 
+    /**
+     * 登录
+     * @param account 账号
+     * @param psd 密码
+     * @return
+     */
     @PostMapping("/login")
     public JSONObject loginPost(@RequestParam String account,
                           @RequestParam String psd) {

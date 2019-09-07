@@ -33,6 +33,12 @@ public class TeamController {
     public JSONObject getTeamList(@RequestParam long uid) {
         return teamService.viewTeams(uid);
     }
+
+    /**
+     * 获得该队长审核已通过的小队
+     * @param uid
+     * @return
+     */
     @PostMapping("/teamListOfAccessByUid")
     public JSONObject teamListOfAccessByUid(@RequestParam long uid) {
         return teamService.teamListOfAccessByUid(uid);
@@ -43,6 +49,11 @@ public class TeamController {
 //        return teamService.teamListOfAccessByUid(uid);
 //    }
 
+    /**
+     * 把成员添加至该小队
+     * @param userList
+     * @return
+     */
     @PostMapping("/addUserToTeam")
     public JSONObject addUserToTeam(@RequestBody String userList) {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(userList);
@@ -67,11 +78,21 @@ public class TeamController {
         return teamService.refuseApplication(tid);
     }
 
+    /**
+     * 获得成员以及所属小队的列表
+     * @param uid
+     * @return
+     */
     @PostMapping("/getMemberAboutTeam")
     public JSONObject getMemberAboutTeam(@RequestParam long uid) {
         return teamService.getMemberAboutTeam(uid);
     }
 
+    /**
+     * 把该队员从该小队里删除
+     * @param id
+     * @return
+     */
     @PostMapping("/delTeamMember")
     public JSONObject delTeamMember(@RequestParam long id) {
         return teamService.delTeamMember(id);
@@ -82,16 +103,32 @@ public class TeamController {
         return teamService.viewTeamInfo(uid);
     }
 
+    /**
+     * 获取审核通过的小队
+     * @param state
+     * @return
+     */
     @PostMapping("/getTeamLists")
     public JSONObject getTeamLists(@RequestParam int state){
         return teamService.getTeamLists(state);
     }
 
+    /**
+     * 通过团队id查看团队成员
+     * @param tId 团队id
+     * @return
+     */
     @PostMapping("/teamUserList")
     public JSONObject teamUserList(BigInteger tId){
         return teamService.teamUserList(tId);
     }
 
+    /**
+     * 小队审批
+     * @param tId
+     * @param state
+     * @return
+     */
     @PostMapping("/exTeamApplication")
     public JSONObject examineTeamApplication(@RequestParam long tId ,@RequestParam int state){
         return teamService.examineTeamApplication(tId,state);

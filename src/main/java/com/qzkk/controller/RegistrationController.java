@@ -27,6 +27,11 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * 注册系统
+     * @param registration  用户注册信息
+     * @return
+     */
     @PostMapping("/perRegistration")
     public JSONObject perRegistration(User registration){
         JSONObject res =new JSONObject();
@@ -54,6 +59,11 @@ public class RegistrationController {
         return res;
     }
 
+    /**
+     * 删除用户
+     * @param uid
+     * @return
+     */
     @PostMapping("/delUser")
     public JSONObject delUser(@RequestParam long uid){
         JSONObject res=new JSONObject();
@@ -72,7 +82,7 @@ public class RegistrationController {
     }
 
     /**
-     * 如果查询框中的内容不为空，则根据条件约束查询并进行分页
+     * 如果查询框中的内容不为空，则根据条件约束查询并进行分页--人员查询
      * @param registration
      * @return
      */
@@ -94,6 +104,14 @@ public class RegistrationController {
         }
         return res;
     }
+
+    /**
+     * 根据条件获取还不是该小队成员的成员，并且分页
+     * @param tid
+     * @param pageOffset
+     * @param name
+     * @return
+     */
     @PostMapping("/findByConditions1")
     public JSONObject findByConditions1(@RequestParam long tid,@RequestParam int pageOffset,@RequestParam String name){
         JSONObject res=new JSONObject();
@@ -115,7 +133,7 @@ public class RegistrationController {
     }
 
     /**
-     * 如果查询框中的内容为空，则查询全部数据并进行分页
+     * 如果查询框中的内容为空，则查询全部数据并进行分页--人员查询
      * @param registration
      * @return
      */
@@ -137,6 +155,12 @@ public class RegistrationController {
         return res;
     }
 
+    /**
+     * 获得还不是该小队的成员，并且分页
+     * @param tid
+     * @param pageOffset
+     * @return
+     */
     @PostMapping("/findAllToPage1")
     public JSONObject findAllToPage1(@RequestParam long tid,@RequestParam int pageOffset){
         JSONObject res=new JSONObject();
