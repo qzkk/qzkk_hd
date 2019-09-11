@@ -3,10 +3,13 @@ package com.qzkk.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.qzkk.dao.GoodApplicationRepository;
 import com.qzkk.dao.GoodRepository;
+import com.qzkk.dao.ReturnApplicationRepository;
 import com.qzkk.domain.Good;
 import com.qzkk.domain.GoodApplication;
+import com.qzkk.domain.ReturnApplication;
 import com.qzkk.service.GoodService;
 import com.qzkk.utils.CastEntity;
 import com.qzkk.vo.GetGoodApplyInfo;
@@ -31,6 +34,9 @@ public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodApplicationRepository goodApplicationRepository;
+
+    @Autowired
+    private ReturnApplicationRepository returnApplicationRepository;
 
     @Override
     public JSONObject addGood(Good good) {
@@ -298,5 +304,39 @@ public class GoodServiceImpl implements GoodService {
         res.put("msg","审批不通过，请重新提交物资");
         return res;
 //        审核拒绝小队物资申请
+    }
+
+    @Override
+    public JSONObject getRetrunApplication() {
+        JSONObject res=new JSONObject();
+        try{
+            List<ReturnApplication> list=returnApplicationRepository.getReturnAply();
+            res.put("list",list);
+            res.put("code", "200");
+        }catch (Exception e){
+            res.put("msg","查询出错");
+            res.put("code", "500");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject accessReturn(long gid, int returnNumber,long gaId) {
+        JSONObject res=new JSONObject();
+        try {
+            Good good=goodRepository.findByGId(gid);
+            good.setUsingNumber(good.getUsingNumber()-returnNumber);
+            goodRepository.save(good);
+            GoodApplication goodApplication=goodApplicationRepository.findByGaId(gaId);
+            goodApplication.setState(4);
+            ReturnApplication returnApplication=returnApplicationRepository.findByGaId(gaId);
+            returnApplicationRepository.delete(returnApplication);
+            res.put("msg","操作成功");
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","操作失败");
+            res.put("code","500");
+        }
+        return res;
     }
 }

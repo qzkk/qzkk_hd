@@ -24,11 +24,21 @@ public class TeamController {
     @Autowired
     private TeamService teamService;
 
+    /**
+     * 添加队伍申请（暂时废弃此功能）
+     * @param team
+     * @return
+     */
     @PostMapping("/addTeamApplication")
     public JSONObject addTeamApplication(Team team) {
         return teamService.addTeamApplication(team);
     }
 
+    /**
+     * 获得该负责人名下的小队列表
+     * @param uid
+     * @return
+     */
     @PostMapping("/getTeamList")
     public JSONObject getTeamList(@RequestParam long uid) {
         return teamService.viewTeams(uid);
@@ -68,11 +78,21 @@ public class TeamController {
         return teamService.addUserToTeam(userList1);
     }
 
+    /**
+     * 通过其小队申请（暂时废弃此功能）
+     * @param tid 小队id
+     * @return
+     */
     @PostMapping("/examineTeamApplication")
     public JSONObject examineApplication(@RequestParam long tid) {
         return teamService.examineApplication(tid);
     }
 
+    /**
+     * 拒绝其小队申请（暂时废弃此功能）
+     * @param tid 小队id
+     * @return
+     */
     @PostMapping("/refuseTeamApplication")
     public JSONObject refuseApplication(@RequestParam long tid) {
         return teamService.refuseApplication(tid);
@@ -98,6 +118,11 @@ public class TeamController {
         return teamService.delTeamMember(id);
     }
 
+    /**
+     * 获取该负责人下的小队信息（暂时不用）
+     * @param uid
+     * @return
+     */
     @PostMapping("/getTeamInfo")
     public JSONObject getTeamInfo(@RequestParam long uid) {
         return teamService.viewTeamInfo(uid);

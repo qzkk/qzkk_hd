@@ -51,7 +51,7 @@ public class GoodApplication {
         // 申请物资的描述
         private String description;
 
-        // 审核的状态：0待审核，1审核通过，-1审核不通过
+        // 审核的状态：0待审核，1审核通过，-1审核不通过,2正在归还，3归还不通过,4归还成功
         private int state = 0;
 
         public long getGId() {

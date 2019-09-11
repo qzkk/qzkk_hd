@@ -2,6 +2,7 @@ package com.qzkk.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.BigIntegerNode;
+import com.google.gson.JsonObject;
 import com.qzkk.domain.GoodApplication;
 import com.qzkk.service.GoodService;
 import com.qzkk.vo.GetGoodApplyInfo;
@@ -64,11 +65,21 @@ public class GoodApplicationController {
 //        拒绝物资申请
     }
 
+    /**
+     * 通过其物资申请（暂时用上边的）
+     * @param gaid
+     * @return
+     */
     @PostMapping("/examineApplication")
     public JSONObject examineApplication(@RequestParam long gaid) {
          return goodService.examineApplication(gaid);
     }
 
+    /**
+     * 拒绝其物资申请（暂时用上边的）
+     * @param gaid
+     * @return
+     */
     @PostMapping("/refuseApplication")
     public JSONObject refuseApplication(@RequestParam long gaid) {
         return goodService.refuseApplication(gaid);
@@ -125,6 +136,27 @@ public class GoodApplicationController {
     @PostMapping("/deleteApply")
     public JSONObject deleteApply(@RequestParam long gaid) {
         return goodService.deleteApply(gaid);
+    }
+
+    /**
+     * 获得要归还物资的申请列表
+     * @return
+     */
+    @PostMapping("/getRetrunApplication")
+    public JSONObject getRetrunApplication(){
+        return goodService.getRetrunApplication();
+    }
+
+    /**
+     * 基地确认物资归还
+     * @param gid 物资id
+     * @param retrunNumber 归还数量
+     * @param gaId 物资申请时的id
+     * @return
+     */
+    @PostMapping("/accessReturn")
+    public JSONObject accessReturn(@RequestParam long gid,@RequestParam int retrunNumber,@RequestParam long gaId){
+        return goodService.accessReturn(gid,retrunNumber,gaId);
     }
 
 }

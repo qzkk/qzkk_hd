@@ -45,9 +45,9 @@ public interface GoodService {
     JSONObject abandonApply(long gaid,long gid,int number);
     JSONObject returnGoods(long gaid,long gid ,int number);
     JSONObject deleteApply(long gaid);
-
     JSONObject delGood(String identifier);
-
     JSONObject examineGoodApplication(long gaId);
     JSONObject refuseGoodApplication(long gaId);
+    JSONObject getRetrunApplication();
+    JSONObject accessReturn(long gid,int returnNumber,long gaId);
 }

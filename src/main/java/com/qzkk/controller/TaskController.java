@@ -37,6 +37,10 @@ public class TaskController {
         return taskService.getTaskList(tid);
     }
 
+    /**
+     * 获取所有任务
+     * @return
+     */
     @PostMapping("/getTaskList1")
     public JSONObject getTaskList1() {
         return taskService.getTaskList1();
@@ -44,7 +48,7 @@ public class TaskController {
 
     /**
      * 获取该队长的任务列表
-     * @param uid
+     * @param uid 负责人id
      * @return
      */
     @PostMapping("/getTaskListByUid")
@@ -52,14 +56,31 @@ public class TaskController {
         return taskService.getTaskListByUid(uid);
     }
 
+    /**
+     * 获取要审核的任务
+     * @return
+     */
     @PostMapping("/getTaskListByExamine")
     public JSONObject getTaskListByExamine() {
         return taskService.getTaskListByExamine();
     }
+
+    /**
+     * 获取该负责人名下已经申请通过的任务
+     * @param uid 负责人id
+     * @return
+     */
     @PostMapping("/getPassedTaskListByUid")
     public JSONObject getPassedTaskListByUid(@RequestParam long uid) {
         return taskService.getPassedTaskListByUid(uid);
     }
+
+    /**
+     * 获取该队长所拥有的小队，并且这些小队还没有分配该任务
+     * @param taid 任务id
+     * @param uid  负责人id
+     * @return
+     */
     @PostMapping("/selectTeamNotDis")
     public JSONObject selectTeamNotDis(@RequestParam long taid,@RequestParam long uid) {
         return taskService.selectTeamNotDis(taid,uid);
@@ -67,7 +88,7 @@ public class TaskController {
 
     /**
      * 申请任务时选择负责小队的列表
-     * @param uid
+     * @param uid 负责人id
      * @return
      */
     @PostMapping("/selectChargedTeam")
@@ -77,7 +98,7 @@ public class TaskController {
 
     /**
      * 删除该任务
-     * @param id
+     * @param id 任务id
      * @return
      */
     @PostMapping("/deleteTask")
@@ -115,6 +136,12 @@ public class TaskController {
 
         return taskService.aplyTask(teamVOS,task);
     }
+
+    /**
+     * 给的多个小队分配任务
+     * @param teamTaskList 例如：{"teamTaskList":[],"taid":1}
+     * @return
+     */
     @PostMapping("/distributeTa")
     public JSONObject distributeTa(@RequestBody String teamTaskList) {
 
