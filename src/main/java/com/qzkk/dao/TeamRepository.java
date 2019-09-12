@@ -63,6 +63,6 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Object[]> teamListOfAccessByUid(@Param("uid") long uid);
 
     @Query(value = "select * from team t where t.t_id in ( SELECT s.team_id from team_user s  \n" +
-            "where s.user_id = 5)  order by t.t_id",nativeQuery = true)
+            "where s.user_id = :uId)  order by t.t_id",nativeQuery = true)
     List<Team> teamListByUserId(@Param("uId") long uId);
 }
