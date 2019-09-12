@@ -50,5 +50,5 @@ public interface TeamService {
 
     JSONObject examineTeamApplication(Long tId , int state);
 
-
+    JSONObject teamListByUserId(long uId);
 }

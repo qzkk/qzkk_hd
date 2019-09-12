@@ -159,6 +159,10 @@ public class TeamController {
         return teamService.examineTeamApplication(tId,state);
     }
 
+    @GetMapping("/team/userId/{userId}")
+    public JSONObject getTeamListByUserId(@PathVariable Long userId){
+        return teamService.teamListByUserId(userId);
+    }
 
 
 }
