@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.BigIntegerNode;
 import com.google.gson.JsonObject;
 import com.qzkk.domain.GoodApplication;
+import com.qzkk.domain.ReturnApplication;
 import com.qzkk.service.GoodService;
 import com.qzkk.vo.GetGoodApplyInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,14 +119,11 @@ public class GoodApplicationController {
 
     /**
      * 归还物资
-     * @param gaid
-     * @param gid
-     * @param number
      * @return
      */
     @PostMapping("/returnGoods")
-    public JSONObject returnGoods(@RequestParam long gaid,@RequestParam long gid,@RequestParam int number) {
-        return goodService.returnGoods(gaid,gid,number);
+    public JSONObject returnGoods(ReturnApplication returnApplication) {
+        return goodService.returnGoods(returnApplication);
     }
 
     /**
@@ -157,6 +155,26 @@ public class GoodApplicationController {
     @PostMapping("/accessReturn")
     public JSONObject accessReturn(@RequestParam long gid,@RequestParam int retrunNumber,@RequestParam long gaId){
         return goodService.accessReturn(gid,retrunNumber,gaId);
+    }
+
+    /**
+     * 拒绝归还申请
+     * @param gaId
+     * @return
+     */
+    @PostMapping("/refuseReturn")
+    public JSONObject refuseReturn(@RequestParam long gaId){
+        return goodService.refuseReturn(gaId);
+    }
+
+    /**
+     * 取消物资归还申请
+     * @param gaid 物资申请id
+     * @return
+     */
+    @PostMapping("/abandonReturn")
+    public JSONObject abandonReturn(@RequestParam long gaid){
+        return goodService.abandonReturn(gaid);
     }
 
 }

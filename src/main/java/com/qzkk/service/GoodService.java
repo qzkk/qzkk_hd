@@ -3,6 +3,7 @@ package com.qzkk.service;
 import com.alibaba.fastjson.JSONObject;
 import com.qzkk.domain.Good;
 import com.qzkk.domain.GoodApplication;
+import com.qzkk.domain.ReturnApplication;
 
 import java.math.BigInteger;
 
@@ -43,11 +44,13 @@ public interface GoodService {
     JSONObject getLeftGoodTypes();
     JSONObject getGoodAplyByUid(long uid);
     JSONObject abandonApply(long gaid,long gid,int number);
-    JSONObject returnGoods(long gaid,long gid ,int number);
+    JSONObject returnGoods(ReturnApplication returnApplication);
     JSONObject deleteApply(long gaid);
     JSONObject delGood(String identifier);
     JSONObject examineGoodApplication(long gaId);
     JSONObject refuseGoodApplication(long gaId);
     JSONObject getRetrunApplication();
     JSONObject accessReturn(long gid,int returnNumber,long gaId);
+    JSONObject refuseReturn(long gaId);
+    JSONObject abandonReturn(long gaid);
 }

@@ -33,6 +33,8 @@ public class GoodAplyInfo {
 
     private String tname;
 
+    private BigInteger tid;
+
     private String sn;
 
 

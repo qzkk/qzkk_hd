@@ -27,7 +27,7 @@ public class ReturnApplication {
     //归还的小队名称
     private String teamName;
     //del=1代表删除，del=0代表未删除
-    private int del;
+    private int del=0;
     //物资申请id
     private long gaId;
 }

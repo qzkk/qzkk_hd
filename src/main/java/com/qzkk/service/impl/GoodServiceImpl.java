@@ -229,13 +229,13 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public JSONObject returnGoods(long gaid,long gid,int number) {
+    public JSONObject returnGoods(ReturnApplication returnApplication) {
         JSONObject res = new JSONObject();
         try {
-            Good oldGood=goodRepository.findByGId(gid);
-            oldGood.setApplyingNumber(oldGood.getUsingNumber()-number);
-            goodRepository.save(oldGood);
-            goodApplicationRepository.deleteOne(gaid);
+            returnApplicationRepository.save(returnApplication);
+            GoodApplication goodApplication=goodApplicationRepository.findByGaId(returnApplication.getGaId());
+            goodApplication.setState(2);
+            goodApplicationRepository.save(goodApplication);
             res.put("code", "200");
             res.put("msg", "操作成功");
         }catch (Exception e){
@@ -329,7 +329,46 @@ public class GoodServiceImpl implements GoodService {
             goodRepository.save(good);
             GoodApplication goodApplication=goodApplicationRepository.findByGaId(gaId);
             goodApplication.setState(4);
+            goodApplicationRepository.save(goodApplication);
             ReturnApplication returnApplication=returnApplicationRepository.findByGaId(gaId);
+            returnApplication.setDel(1);
+            returnApplicationRepository.save(returnApplication);
+            res.put("msg","操作成功");
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","操作失败");
+            res.put("code","500");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject refuseReturn(long gaId) {
+        JSONObject res=new JSONObject();
+        try {
+            GoodApplication goodApplication=goodApplicationRepository.findByGaId(gaId);
+            goodApplication.setState(3);
+            goodApplicationRepository.save(goodApplication);
+            ReturnApplication returnApplication=returnApplicationRepository.findByGaId(gaId);
+            returnApplication.setDel(1);
+            returnApplicationRepository.save(returnApplication);
+            res.put("msg","操作成功");
+            res.put("code","200");
+        }catch (Exception e){
+            res.put("msg","操作失败");
+            res.put("code","500");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject abandonReturn(long gaid) {
+        JSONObject res=new JSONObject();
+        try {
+            GoodApplication goodApplication=goodApplicationRepository.findByGaId(gaid);
+            goodApplication.setState(1);
+            goodApplicationRepository.save(goodApplication);
+            ReturnApplication returnApplication=returnApplicationRepository.findByGaId(gaid);
             returnApplicationRepository.delete(returnApplication);
             res.put("msg","操作成功");
             res.put("code","200");
@@ -339,4 +378,5 @@ public class GoodServiceImpl implements GoodService {
         }
         return res;
     }
+
 }
