@@ -63,4 +63,8 @@ public class GoodController {
         return goodService.delGood(identifier);
     }
 
+    @PostMapping("/goodMessage")
+    public JSONObject goodMessage(String identifier){
+        return goodService.goodMessage(identifier);
+    }
 }

@@ -1,4 +1,5 @@
 server:
+  port: 81
   servlet:
     context-path: /api
 
@@ -33,7 +34,4 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-server:
-  port: 8080
 

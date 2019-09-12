@@ -53,4 +53,6 @@ public interface GoodService {
     JSONObject accessReturn(long gid,int returnNumber,long gaId);
     JSONObject refuseReturn(long gaId);
     JSONObject abandonReturn(long gaid);
+
+    JSONObject goodMessage(String identifier);
 }

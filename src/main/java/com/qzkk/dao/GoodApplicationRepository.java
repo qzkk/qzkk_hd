@@ -59,4 +59,10 @@ public interface GoodApplicationRepository extends JpaRepository<GoodApplication
      * 查看所有待审核物资
      * @return
      */
+
+    @Query(value = "select g.name as gname,t.name as tname,ga.state,ga.number,ga.description,date_format(ga.application_time,'%Y-%m-%d %H:%i:%s'),date_format(ga.end_time,'%Y-%m-%d %H:%i:%s') from good_application ga\n"+
+    "join good as g on ga.g_id=g.g_id \n"+
+    "join team as t on t.t_id = ga.team_id \n"+
+    "where g.identifier =:identifier and (ga.state = 1 or ga.state = 2 )  \n",nativeQuery =true)
+    List<Object[]> goodMessage(@Param("identifier") String identifier);
 }

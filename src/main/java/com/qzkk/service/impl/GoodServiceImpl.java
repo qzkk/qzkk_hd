@@ -14,6 +14,7 @@ import com.qzkk.service.GoodService;
 import com.qzkk.utils.CastEntity;
 import com.qzkk.vo.GetGoodApplyInfo;
 import com.qzkk.vo.GoodAplyInfo;
+import com.qzkk.vo.GoodMessage;
 import com.qzkk.vo.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -375,6 +376,21 @@ public class GoodServiceImpl implements GoodService {
         }catch (Exception e){
             res.put("msg","操作失败");
             res.put("code","500");
+        }
+        return res;
+    }
+
+    @Override
+    public JSONObject goodMessage(String identifier){
+        JSONObject res = new JSONObject();
+        try {
+            List<Object[]> list = goodApplicationRepository.goodMessage(identifier);
+            List<GoodMessage> goodMessages = CastEntity.castEntity(list, GoodMessage.class);
+            res.put("list",goodMessages);
+            res.put("msg","操作成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","失败");
         }
         return res;
     }
