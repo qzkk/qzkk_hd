@@ -1,9 +1,6 @@
 package com.qzkk.service.impl;
-
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.qzkk.dao.GoodApplicationRepository;
 import com.qzkk.dao.GoodRepository;
 import com.qzkk.dao.ReturnApplicationRepository;
@@ -15,11 +12,8 @@ import com.qzkk.utils.CastEntity;
 import com.qzkk.vo.GetGoodApplyInfo;
 import com.qzkk.vo.GoodAplyInfo;
 import com.qzkk.vo.GoodMessage;
-import com.qzkk.vo.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

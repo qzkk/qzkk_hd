@@ -137,8 +137,11 @@ public class TeamServiceImpl implements TeamService{
         else {
             team.setState(1);//直接创建无需审核
             teamRepository.save(team);
+            List<Team> returnData=teamRepository.findByName(team.getName());
+
             res.put("code","200");
             res.put("msg","team has creat");
+            res.put("tid",returnData.get(0).getTId());
             return res;
         }
     }
